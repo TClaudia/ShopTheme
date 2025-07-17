@@ -1,6 +1,6 @@
 <?php
 /**
- * Barista Team Elementor Widget
+ * Booking Form Elementor Widget
  *
  * @package CoffeeShop
  */
@@ -9,18 +9,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
+class CoffeeShop_Booking_Form_Widget extends \Elementor\Widget_Base {
 
     public function get_name() {
-        return 'coffeeshop-barista-team';
+        return 'coffeeshop-booking-form';
     }
 
     public function get_title() {
-        return __('Barista Team', 'coffeeshop');
+        return __('Booking Form', 'coffeeshop');
     }
 
     public function get_icon() {
-        return 'eicon-person';
+        return 'eicon-form-horizontal';
     }
 
     public function get_categories() {
@@ -28,268 +28,86 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
     }
 
     public function get_keywords() {
-        return ['barista', 'team', 'staff', 'people', 'coffee'];
+        return ['booking', 'form', 'reservation', 'table', 'coffee'];
+    }
+
+    public function get_script_depends() {
+        return ['coffeeshop-elementor-widgets'];
+    }
+
+    public function get_style_depends() {
+        return ['coffeeshop-elementor-widgets'];
     }
 
     protected function register_controls() {
         // Content Section
-        $this->start_controls_section(
-            'content_section',
-            [
-                'label' => __('Team Members', 'coffeeshop'),
-                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
-            ]
-        );
-
-        $repeater = new \Elementor\Repeater();
-
-        $repeater->add_control(
-            'member_image',
-            [
-                'label' => __('Photo', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::MEDIA,
-                'default' => [
-                    'url' => \Elementor\Utils::get_placeholder_image_src(),
-                ],
-            ]
-        );
-
-        $repeater->add_control(
-            'member_name',
-            [
-                'label' => __('Name', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Maria Rodriguez', 'coffeeshop'),
-                'placeholder' => __('Enter member name', 'coffeeshop'),
-            ]
-        );
-
-        $repeater->add_control(
-            'member_position',
-            [
-                'label' => __('Position', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Head Barista', 'coffeeshop'),
-                'placeholder' => __('Enter position', 'coffeeshop'),
-            ]
-        );
-
-        $repeater->add_control(
-            'member_bio',
-            [
-                'label' => __('Bio', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::TEXTAREA,
-                'default' => __('Passionate about creating the perfect coffee experience with 8 years of expertise.', 'coffeeshop'),
-                'placeholder' => __('Enter member bio', 'coffeeshop'),
-            ]
-        );
-
-        $repeater->add_control(
-            'member_specialty',
-            [
-                'label' => __('Specialty', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'default' => __('Latte Art', 'coffeeshop'),
-                'placeholder' => __('Coffee specialty', 'coffeeshop'),
-            ]
-        );
-
-        $repeater->add_control(
-            'member_experience',
-            [
-                'label' => __('Years of Experience', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'default' => 5,
-                'min' => 0,
-                'max' => 50,
-                'step' => 1,
-            ]
-        );
-
-        $repeater->add_control(
-            'social_heading',
-            [
-                'label' => __('Social Media', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::HEADING,
-                'separator' => 'before',
-            ]
-        );
-
-        $repeater->add_control(
-            'member_facebook',
-            [
-                'label' => __('Facebook', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::URL,
-                'placeholder' => __('https://facebook.com/username', 'coffeeshop'),
-                'show_external' => true,
-                'default' => [
-                    'url' => '',
-                    'is_external' => true,
-                    'nofollow' => true,
-                ],
-            ]
-        );
-
-        $repeater->add_control(
-            'member_instagram',
-            [
-                'label' => __('Instagram', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::URL,
-                'placeholder' => __('https://instagram.com/username', 'coffeeshop'),
-                'show_external' => true,
-                'default' => [
-                    'url' => '',
-                    'is_external' => true,
-                    'nofollow' => true,
-                ],
-            ]
-        );
-
-        $repeater->add_control(
-            'member_twitter',
-            [
-                'label' => __('Twitter', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::URL,
-                'placeholder' => __('https://twitter.com/username', 'coffeeshop'),
-                'show_external' => true,
-                'default' => [
-                    'url' => '',
-                    'is_external' => true,
-                    'nofollow' => true,
-                ],
-            ]
-        );
-
         $this->add_control(
-            'team_members',
+            'show_newsletter_signup',
             [
-                'label' => __('Team Members', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::REPEATER,
-                'fields' => $repeater->get_controls(),
-                'default' => [
-                    [
-                        'member_name' => __('Maria Rodriguez', 'coffeeshop'),
-                        'member_position' => __('Head Barista', 'coffeeshop'),
-                        'member_bio' => __('Passionate about creating the perfect coffee experience with 8 years of expertise.', 'coffeeshop'),
-                        'member_specialty' => __('Latte Art', 'coffeeshop'),
-                        'member_experience' => 8,
-                    ],
-                    [
-                        'member_name' => __('Carlos Martinez', 'coffeeshop'),
-                        'member_position' => __('Coffee Roaster', 'coffeeshop'),
-                        'member_bio' => __('Expert in coffee bean roasting and flavor profiling with international certifications.', 'coffeeshop'),
-                        'member_specialty' => __('Bean Roasting', 'coffeeshop'),
-                        'member_experience' => 12,
-                    ],
-                    [
-                        'member_name' => __('Sophie Chen', 'coffeeshop'),
-                        'member_position' => __('Barista', 'coffeeshop'),
-                        'member_bio' => __('Specializes in espresso-based drinks and customer service excellence.', 'coffeeshop'),
-                        'member_specialty' => __('Espresso', 'coffeeshop'),
-                        'member_experience' => 4,
-                    ],
-                ],
-                'title_field' => '{{{ member_name }}}',
+                'label' => __('Show Newsletter Signup', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
             ]
         );
 
         $this->end_controls_section();
 
-        // Layout Section
+        // Submit Button Section
         $this->start_controls_section(
-            'layout_section',
+            'submit_button_section',
             [
-                'label' => __('Layout', 'coffeeshop'),
+                'label' => __('Submit Button', 'coffeeshop'),
                 'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
             ]
         );
 
-        $this->add_responsive_control(
-            'columns',
+        $this->add_control(
+            'submit_button_text',
             [
-                'label' => __('Columns', 'coffeeshop'),
+                'label' => __('Button Text', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Book Table', 'coffeeshop'),
+                'placeholder' => __('Enter button text', 'coffeeshop'),
+            ]
+        );
+
+        $this->add_control(
+            'button_size',
+            [
+                'label' => __('Button Size', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::SELECT,
-                'default' => '3',
-                'tablet_default' => '2',
-                'mobile_default' => '1',
+                'default' => 'md',
                 'options' => [
-                    '1' => '1',
-                    '2' => '2',
-                    '3' => '3',
-                    '4' => '4',
+                    'xs' => __('Extra Small', 'coffeeshop'),
+                    'sm' => __('Small', 'coffeeshop'),
+                    'md' => __('Medium', 'coffeeshop'),
+                    'lg' => __('Large', 'coffeeshop'),
+                    'xl' => __('Extra Large', 'coffeeshop'),
                 ],
-                'selectors' => [
-                    '{{WRAPPER}} .barista-team-grid' => 'grid-template-columns: repeat({{VALUE}}, 1fr);',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'show_bio',
-            [
-                'label' => __('Show Bio', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __('Show', 'coffeeshop'),
-                'label_off' => __('Hide', 'coffeeshop'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $this->add_control(
-            'show_specialty',
-            [
-                'label' => __('Show Specialty', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __('Show', 'coffeeshop'),
-                'label_off' => __('Hide', 'coffeeshop'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $this->add_control(
-            'show_experience',
-            [
-                'label' => __('Show Experience', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __('Show', 'coffeeshop'),
-                'label_off' => __('Hide', 'coffeeshop'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
-
-        $this->add_control(
-            'show_social',
-            [
-                'label' => __('Show Social Links', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => __('Show', 'coffeeshop'),
-                'label_off' => __('Hide', 'coffeeshop'),
-                'return_value' => 'yes',
-                'default' => 'yes',
             ]
         );
 
         $this->end_controls_section();
 
-        // Card Style Section
+        // Style Section - Form
         $this->start_controls_section(
-            'card_style_section',
+            'form_style_section',
             [
-                'label' => __('Card Style', 'coffeeshop'),
+                'label' => __('Form Style', 'coffeeshop'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
 
         $this->add_control(
-            'card_background_color',
+            'form_background_color',
             [
                 'label' => __('Background Color', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .barista-member' => 'background-color: {{VALUE}};',
+                    '{{WRAPPER}} .booking-form-widget' => 'background-color: {{VALUE}};',
                 ],
             ]
         );
@@ -297,20 +115,20 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
         $this->add_group_control(
             \Elementor\Group_Control_Border::get_type(),
             [
-                'name' => 'card_border',
+                'name' => 'form_border',
                 'label' => __('Border', 'coffeeshop'),
-                'selector' => '{{WRAPPER}} .barista-member',
+                'selector' => '{{WRAPPER}} .booking-form-widget',
             ]
         );
 
         $this->add_control(
-            'card_border_radius',
+            'form_border_radius',
             [
                 'label' => __('Border Radius', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%'],
                 'selectors' => [
-                    '{{WRAPPER}} .barista-member' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .booking-form-widget' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -318,92 +136,29 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
         $this->add_group_control(
             \Elementor\Group_Control_Box_Shadow::get_type(),
             [
-                'name' => 'card_box_shadow',
+                'name' => 'form_box_shadow',
                 'label' => __('Box Shadow', 'coffeeshop'),
-                'selector' => '{{WRAPPER}} .barista-member',
+                'selector' => '{{WRAPPER}} .booking-form-widget',
             ]
         );
 
         $this->add_responsive_control(
-            'card_padding',
+            'form_padding',
             [
                 'label' => __('Padding', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', 'em', '%'],
                 'selectors' => [
-                    '{{WRAPPER}} .barista-member' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                    '{{WRAPPER}} .booking-form-widget' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
 
         $this->end_controls_section();
 
-        // Image Style Section
+        // Style Section - Typography
         $this->start_controls_section(
-            'image_style_section',
-            [
-                'label' => __('Image Style', 'coffeeshop'),
-                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_responsive_control(
-            'image_width',
-            [
-                'label' => __('Width', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'size_units' => ['px', '%'],
-                'range' => [
-                    'px' => [
-                        'min' => 50,
-                        'max' => 500,
-                    ],
-                    '%' => [
-                        'min' => 10,
-                        'max' => 100,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .member-image' => 'width: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_responsive_control(
-            'image_height',
-            [
-                'label' => __('Height', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::SLIDER,
-                'size_units' => ['px'],
-                'range' => [
-                    'px' => [
-                        'min' => 50,
-                        'max' => 500,
-                    ],
-                ],
-                'selectors' => [
-                    '{{WRAPPER}} .member-image' => 'height: {{SIZE}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->add_control(
-            'image_border_radius',
-            [
-                'label' => __('Border Radius', 'coffeeshop'),
-                'type' => \Elementor\Controls_Manager::DIMENSIONS,
-                'size_units' => ['px', '%'],
-                'selectors' => [
-                    '{{WRAPPER}} .member-image img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-                ],
-            ]
-        );
-
-        $this->end_controls_section();
-
-        // Typography Section
-        $this->start_controls_section(
-            'typography_section',
+            'typography_style_section',
             [
                 'label' => __('Typography', 'coffeeshop'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
@@ -413,19 +168,25 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
-                'name' => 'name_typography',
-                'label' => __('Name Typography', 'coffeeshop'),
-                'selector' => '{{WRAPPER}} .member-name',
+                'name' => 'title_typography',
+                'label' => __('Title Typography', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .booking-form-title',
+                'condition' => [
+                    'show_title' => 'yes',
+                ],
             ]
         );
 
         $this->add_control(
-            'name_color',
+            'title_color',
             [
-                'label' => __('Name Color', 'coffeeshop'),
+                'label' => __('Title Color', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .member-name' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .booking-form-title' => 'color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'show_title' => 'yes',
                 ],
             ]
         );
@@ -433,19 +194,25 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
-                'name' => 'position_typography',
-                'label' => __('Position Typography', 'coffeeshop'),
-                'selector' => '{{WRAPPER}} .member-position',
+                'name' => 'description_typography',
+                'label' => __('Description Typography', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .booking-form-description',
+                'condition' => [
+                    'show_description' => 'yes',
+                ],
             ]
         );
 
         $this->add_control(
-            'position_color',
+            'description_color',
             [
-                'label' => __('Position Color', 'coffeeshop'),
+                'label' => __('Description Color', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .member-position' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .booking-form-description' => 'color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'show_description' => 'yes',
                 ],
             ]
         );
@@ -453,19 +220,233 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
-                'name' => 'bio_typography',
-                'label' => __('Bio Typography', 'coffeeshop'),
-                'selector' => '{{WRAPPER}} .member-bio',
+                'name' => 'label_typography',
+                'label' => __('Label Typography', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .form-group label',
             ]
         );
 
         $this->add_control(
-            'bio_color',
+            'label_color',
             [
-                'label' => __('Bio Color', 'coffeeshop'),
+                'label' => __('Label Color', 'coffeeshop'),
                 'type' => \Elementor\Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .member-bio' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .form-group label' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Style Section - Fields
+        $this->start_controls_section(
+            'fields_style_section',
+            [
+                'label' => __('Form Fields', 'coffeeshop'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'field_typography',
+                'label' => __('Field Typography', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .form-group input, {{WRAPPER}} .form-group select, {{WRAPPER}} .form-group textarea',
+            ]
+        );
+
+        $this->add_control(
+            'field_text_color',
+            [
+                'label' => __('Text Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .form-group input, {{WRAPPER}} .form-group select, {{WRAPPER}} .form-group textarea' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'field_background_color',
+            [
+                'label' => __('Background Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .form-group input, {{WRAPPER}} .form-group select, {{WRAPPER}} .form-group textarea' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'field_border',
+                'label' => __('Border', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .form-group input, {{WRAPPER}} .form-group select, {{WRAPPER}} .form-group textarea',
+            ]
+        );
+
+        $this->add_control(
+            'field_border_radius',
+            [
+                'label' => __('Border Radius', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .form-group input, {{WRAPPER}} .form-group select, {{WRAPPER}} .form-group textarea' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'field_padding',
+            [
+                'label' => __('Padding', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .form-group input, {{WRAPPER}} .form-group select, {{WRAPPER}} .form-group textarea' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'field_focus_border_color',
+            [
+                'label' => __('Focus Border Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .form-group input:focus, {{WRAPPER}} .form-group select:focus, {{WRAPPER}} .form-group textarea:focus' => 'border-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Style Section - Submit Button
+        $this->start_controls_section(
+            'button_style_section',
+            [
+                'label' => __('Submit Button', 'coffeeshop'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'button_typography',
+                'label' => __('Typography', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .booking-submit-btn',
+            ]
+        );
+
+        $this->start_controls_tabs('button_style_tabs');
+
+        $this->start_controls_tab(
+            'button_normal_tab',
+            [
+                'label' => __('Normal', 'coffeeshop'),
+            ]
+        );
+
+        $this->add_control(
+            'button_text_color',
+            [
+                'label' => __('Text Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .booking-submit-btn' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_background_color',
+            [
+                'label' => __('Background Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .booking-submit-btn' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'button_hover_tab',
+            [
+                'label' => __('Hover', 'coffeeshop'),
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_text_color',
+            [
+                'label' => __('Text Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .booking-submit-btn:hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'button_hover_background_color',
+            [
+                'label' => __('Background Color', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .booking-submit-btn:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->end_controls_tabs();
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'button_border',
+                'label' => __('Border', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .booking-submit-btn',
+            ]
+        );
+
+        $this->add_control(
+            'button_border_radius',
+            [
+                'label' => __('Border Radius', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%'],
+                'selectors' => [
+                    '{{WRAPPER}} .booking-submit-btn' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'button_box_shadow',
+                'label' => __('Box Shadow', 'coffeeshop'),
+                'selector' => '{{WRAPPER}} .booking-submit-btn',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_padding',
+            [
+                'label' => __('Padding', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .booking-submit-btn' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
                 ],
             ]
         );
@@ -476,141 +457,353 @@ class CoffeeShop_Barista_Team_Widget extends \Elementor\Widget_Base {
     protected function render() {
         $settings = $this->get_settings_for_display();
         
-        if (!empty($settings['team_members'])) {
-            echo '<div class="barista-team-widget">';
-            echo '<div class="barista-team-grid">';
-            
-            foreach ($settings['team_members'] as $index => $member) {
-                $member_key = $this->get_repeater_setting_key('member', 'team_members', $index);
-                $this->add_render_attribute($member_key, 'class', 'barista-member');
-                
-                echo '<div ' . $this->get_render_attribute_string($member_key) . '>';
-                
-                // Member Image
-                if (!empty($member['member_image']['url'])) {
-                    echo '<div class="member-image">';
-                    echo '<img src="' . esc_url($member['member_image']['url']) . '" alt="' . esc_attr($member['member_name']) . '">';
-                    echo '</div>';
-                }
-                
-                echo '<div class="member-info">';
-                
-                // Member Name
-                echo '<h3 class="member-name">' . esc_html($member['member_name']) . '</h3>';
-                
-                // Member Position
-                echo '<p class="member-position">' . esc_html($member['member_position']) . '</p>';
-                
-                // Member Specialty
-                if ($settings['show_specialty'] === 'yes' && !empty($member['member_specialty'])) {
-                    echo '<div class="member-specialty">';
-                    echo '<strong>' . __('Specialty:', 'coffeeshop') . '</strong> ' . esc_html($member['member_specialty']);
-                    echo '</div>';
-                }
-                
-                // Member Experience
-                if ($settings['show_experience'] === 'yes' && !empty($member['member_experience'])) {
-                    echo '<div class="member-experience">';
-                    echo '<strong>' . __('Experience:', 'coffeeshop') . '</strong> ' . esc_html($member['member_experience']) . ' ' . __('years', 'coffeeshop');
-                    echo '</div>';
-                }
-                
-                // Member Bio
-                if ($settings['show_bio'] === 'yes' && !empty($member['member_bio'])) {
-                    echo '<p class="member-bio">' . esc_html($member['member_bio']) . '</p>';
-                }
-                
-                // Social Links
-                if ($settings['show_social'] === 'yes') {
-                    $social_links = '';
-                    
-                    if (!empty($member['member_facebook']['url'])) {
-                        $social_links .= '<a href="' . esc_url($member['member_facebook']['url']) . '" target="_blank" rel="nofollow"><i class="fab fa-facebook"></i></a>';
-                    }
-                    
-                    if (!empty($member['member_instagram']['url'])) {
-                        $social_links .= '<a href="' . esc_url($member['member_instagram']['url']) . '" target="_blank" rel="nofollow"><i class="fab fa-instagram"></i></a>';
-                    }
-                    
-                    if (!empty($member['member_twitter']['url'])) {
-                        $social_links .= '<a href="' . esc_url($member['member_twitter']['url']) . '" target="_blank" rel="nofollow"><i class="fab fa-twitter"></i></a>';
-                    }
-                    
-                    if (!empty($social_links)) {
-                        echo '<div class="member-social">' . $social_links . '</div>';
-                    }
-                }
-                
-                echo '</div>'; // member-info
-                echo '</div>'; // barista-member
-            }
-            
-            echo '</div>'; // barista-team-grid
-            echo '</div>'; // barista-team-widget
+        echo '<div class="booking-form-widget">';
+        
+        // Form Title
+        if ($settings['show_title'] === 'yes' && !empty($settings['form_title'])) {
+            echo '<h2 class="booking-form-title">' . esc_html($settings['form_title']) . '</h2>';
         }
+        
+        // Form Description
+        if ($settings['show_description'] === 'yes' && !empty($settings['form_description'])) {
+            echo '<p class="booking-form-description">' . esc_html($settings['form_description']) . '</p>';
+        }
+        
+        echo '<form class="booking-form" id="elementor-booking-form-' . $this->get_id() . '">';
+        
+        // Name Fields
+        if ($settings['name_field_type'] === 'separate') {
+            echo '<div class="form-row">';
+            echo '<div class="form-group">';
+            echo '<label for="first-name-' . $this->get_id() . '">' . __('First Name', 'coffeeshop') . ' *</label>';
+            echo '<input type="text" id="first-name-' . $this->get_id() . '" name="first_name" required>';
+            echo '</div>';
+            echo '<div class="form-group">';
+            echo '<label for="last-name-' . $this->get_id() . '">' . __('Last Name', 'coffeeshop') . ' *</label>';
+            echo '<input type="text" id="last-name-' . $this->get_id() . '" name="last_name" required>';
+            echo '</div>';
+            echo '</div>';
+        } else {
+            echo '<div class="form-group">';
+            echo '<label for="full-name-' . $this->get_id() . '">' . __('Full Name', 'coffeeshop') . ' *</label>';
+            echo '<input type="text" id="full-name-' . $this->get_id() . '" name="full_name" required>';
+            echo '</div>';
+        }
+        
+        // Email and Phone
+        echo '<div class="form-row">';
+        echo '<div class="form-group">';
+        echo '<label for="email-' . $this->get_id() . '">' . __('Email', 'coffeeshop') . ' *</label>';
+        echo '<input type="email" id="email-' . $this->get_id() . '" name="email" required>';
+        echo '</div>';
+        
+        if ($settings['show_phone_field'] === 'yes') {
+            echo '<div class="form-group">';
+            echo '<label for="phone-' . $this->get_id() . '">' . __('Phone', 'coffeeshop') . ' *</label>';
+            echo '<input type="tel" id="phone-' . $this->get_id() . '" name="phone" required>';
+            echo '</div>';
+        }
+        echo '</div>';
+        
+        // Date and Time
+        echo '<div class="form-row">';
+        echo '<div class="form-group">';
+        echo '<label for="date-' . $this->get_id() . '">' . __('Date', 'coffeeshop') . ' *</label>';
+        echo '<input type="date" id="date-' . $this->get_id() . '" name="date" required min="' . date('Y-m-d') . '">';
+        echo '</div>';
+        echo '<div class="form-group">';
+        echo '<label for="time-' . $this->get_id() . '">' . __('Time', 'coffeeshop') . ' *</label>';
+        echo '<input type="time" id="time-' . $this->get_id() . '" name="time" required min="07:00" max="20:00">';
+        echo '</div>';
+        echo '</div>';
+        
+        // Guests and Occasion
+        echo '<div class="form-row">';
+        echo '<div class="form-group">';
+        echo '<label for="guests-' . $this->get_id() . '">' . __('Number of Guests', 'coffeeshop') . ' *</label>';
+        echo '<select id="guests-' . $this->get_id() . '" name="guests" required>';
+        echo '<option value="">' . __('Select...', 'coffeeshop') . '</option>';
+        for ($i = 1; $i <= 12; $i++) {
+            $text = $i === 1 ? __('person', 'coffeeshop') : __('people', 'coffeeshop');
+            if ($i > 10) {
+                echo '<option value="' . $i . '">' . $i . '+ ' . $text . '</option>';
+            } else {
+                echo '<option value="' . $i . '">' . $i . ' ' . $text . '</option>';
+            }
+        }
+        echo '</select>';
+        echo '</div>';
+        
+        if ($settings['show_occasion_field'] === 'yes') {
+            echo '<div class="form-group">';
+            echo '<label for="occasion-' . $this->get_id() . '">' . __('Occasion', 'coffeeshop') . '</label>';
+            echo '<select id="occasion-' . $this->get_id() . '" name="occasion">';
+            echo '<option value="">' . __('Select...', 'coffeeshop') . '</option>';
+            echo '<option value="casual">' . __('Casual Visit', 'coffeeshop') . '</option>';
+            echo '<option value="business">' . __('Business Meeting', 'coffeeshop') . '</option>';
+            echo '<option value="date">' . __('Date', 'coffeeshop') . '</option>';
+            echo '<option value="celebration">' . __('Celebration', 'coffeeshop') . '</option>';
+            echo '<option value="other">' . __('Other', 'coffeeshop') . '</option>';
+            echo '</select>';
+            echo '</div>';
+        }
+        echo '</div>';
+        
+        // Special Requests
+        if ($settings['show_special_requests'] === 'yes') {
+            echo '<div class="form-group">';
+            echo '<label for="special-requests-' . $this->get_id() . '">' . __('Special Requests', 'coffeeshop') . '</label>';
+            echo '<textarea id="special-requests-' . $this->get_id() . '" name="special_requests" rows="4" placeholder="' . esc_attr__('Any special requests or dietary requirements...', 'coffeeshop') . '"></textarea>';
+            echo '</div>';
+        }
+        
+        // Newsletter Signup
+        if ($settings['show_newsletter_signup'] === 'yes') {
+            echo '<div class="form-group">';
+            echo '<label class="checkbox-label">';
+            echo '<input type="checkbox" name="newsletter" value="1">';
+            echo __('I would like to receive updates about special offers and events', 'coffeeshop');
+            echo '</label>';
+            echo '</div>';
+        }
+        
+        // Submit Button
+        $button_class = 'booking-submit-btn btn-' . $settings['button_size'];
+        echo '<button type="submit" class="' . $button_class . '">' . esc_html($settings['submit_button_text']) . '</button>';
+        
+        echo '</form>';
+        echo '</div>';
     }
 
     protected function content_template() {
         ?>
-        <# if (settings.team_members.length) { #>
-            <div class="barista-team-widget">
-                <div class="barista-team-grid">
-                    <# _.each(settings.team_members, function(member, index) { #>
-                        <div class="barista-member">
-                            <# if (member.member_image.url) { #>
-                                <div class="member-image">
-                                    <img src="{{{ member.member_image.url }}}" alt="{{{ member.member_name }}}">
-                                </div>
-                            <# } #>
-                            
-                            <div class="member-info">
-                                <h3 class="member-name">{{{ member.member_name }}}</h3>
-                                <p class="member-position">{{{ member.member_position }}}</p>
-                                
-                                <# if (settings.show_specialty === 'yes' && member.member_specialty) { #>
-                                    <div class="member-specialty">
-                                        <strong><?php echo __('Specialty:', 'coffeeshop'); ?></strong> {{{ member.member_specialty }}}
-                                    </div>
-                                <# } #>
-                                
-                                <# if (settings.show_experience === 'yes' && member.member_experience) { #>
-                                    <div class="member-experience">
-                                        <strong><?php echo __('Experience:', 'coffeeshop'); ?></strong> {{{ member.member_experience }}} <?php echo __('years', 'coffeeshop'); ?>
-                                    </div>
-                                <# } #>
-                                
-                                <# if (settings.show_bio === 'yes' && member.member_bio) { #>
-                                    <p class="member-bio">{{{ member.member_bio }}}</p>
-                                <# } #>
-                                
-                                <# if (settings.show_social === 'yes') { #>
-                                    <div class="member-social">
-                                        <# if (member.member_facebook.url) { #>
-                                            <a href="{{{ member.member_facebook.url }}}" target="_blank" rel="nofollow">
-                                                <i class="fab fa-facebook"></i>
-                                            </a>
-                                        <# } #>
-                                        <# if (member.member_instagram.url) { #>
-                                            <a href="{{{ member.member_instagram.url }}}" target="_blank" rel="nofollow">
-                                                <i class="fab fa-instagram"></i>
-                                            </a>
-                                        <# } #>
-                                        <# if (member.member_twitter.url) { #>
-                                            <a href="{{{ member.member_twitter.url }}}" target="_blank" rel="nofollow">
-                                                <i class="fab fa-twitter"></i>
-                                            </a>
-                                        <# } #>
-                                    </div>
-                                <# } #>
-                            </div>
+        <#
+        var formId = 'elementor-booking-form-' + view.getID();
+        #>
+        <div class="booking-form-widget">
+            <# if (settings.show_title === 'yes' && settings.form_title) { #>
+                <h2 class="booking-form-title">{{{ settings.form_title }}}</h2>
+            <# } #>
+            
+            <# if (settings.show_description === 'yes' && settings.form_description) { #>
+                <p class="booking-form-description">{{{ settings.form_description }}}</p>
+            <# } #>
+            
+            <form class="booking-form" id="{{{ formId }}}">
+                <# if (settings.name_field_type === 'separate') { #>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><?php echo __('First Name', 'coffeeshop'); ?> *</label>
+                            <input type="text" name="first_name" required>
                         </div>
-                    <# }); #>
+                        <div class="form-group">
+                            <label><?php echo __('Last Name', 'coffeeshop'); ?> *</label>
+                            <input type="text" name="last_name" required>
+                        </div>
+                    </div>
+                <# } else { #>
+                    <div class="form-group">
+                        <label><?php echo __('Full Name', 'coffeeshop'); ?> *</label>
+                        <input type="text" name="full_name" required>
+                    </div>
+                <# } #>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><?php echo __('Email', 'coffeeshop'); ?> *</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <# if (settings.show_phone_field === 'yes') { #>
+                        <div class="form-group">
+                            <label><?php echo __('Phone', 'coffeeshop'); ?> *</label>
+                            <input type="tel" name="phone" required>
+                        </div>
+                    <# } #>
                 </div>
-            </div>
-        <# } #>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><?php echo __('Date', 'coffeeshop'); ?> *</label>
+                        <input type="date" name="date" required>
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo __('Time', 'coffeeshop'); ?> *</label>
+                        <input type="time" name="time" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><?php echo __('Number of Guests', 'coffeeshop'); ?> *</label>
+                        <select name="guests" required>
+                            <option value=""><?php echo __('Select...', 'coffeeshop'); ?></option>
+                            <option value="1">1 <?php echo __('person', 'coffeeshop'); ?></option>
+                            <option value="2">2 <?php echo __('people', 'coffeeshop'); ?></option>
+                            <option value="3">3 <?php echo __('people', 'coffeeshop'); ?></option>
+                            <option value="4">4 <?php echo __('people', 'coffeeshop'); ?></option>
+                        </select>
+                    </div>
+                    <# if (settings.show_occasion_field === 'yes') { #>
+                        <div class="form-group">
+                            <label><?php echo __('Occasion', 'coffeeshop'); ?></label>
+                            <select name="occasion">
+                                <option value=""><?php echo __('Select...', 'coffeeshop'); ?></option>
+                                <option value="casual"><?php echo __('Casual Visit', 'coffeeshop'); ?></option>
+                                <option value="business"><?php echo __('Business Meeting', 'coffeeshop'); ?></option>
+                                <option value="date"><?php echo __('Date', 'coffeeshop'); ?></option>
+                                <option value="celebration"><?php echo __('Celebration', 'coffeeshop'); ?></option>
+                                <option value="other"><?php echo __('Other', 'coffeeshop'); ?></option>
+                            </select>
+                        </div>
+                    <# } #>
+                </div>
+                
+                <# if (settings.show_special_requests === 'yes') { #>
+                    <div class="form-group">
+                        <label><?php echo __('Special Requests', 'coffeeshop'); ?></label>
+                        <textarea name="special_requests" rows="4" placeholder="<?php echo esc_attr__('Any special requests or dietary requirements...', 'coffeeshop'); ?>"></textarea>
+                    </div>
+                <# } #>
+                
+                <# if (settings.show_newsletter_signup === 'yes') { #>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="newsletter" value="1">
+                            <?php echo __('I would like to receive updates about special offers and events', 'coffeeshop'); ?>
+                        </label>
+                    </div>
+                <# } #>
+                
+                <button type="submit" class="booking-submit-btn btn-{{{ settings.button_size }}}">{{{ settings.submit_button_text }}}</button>
+            </form>
+        </div>
         <?php
     }
 }
 
 // Register the widget
-\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new CoffeeShop_Barista_Team_Widget());
+\Elementor\Plugin::instance()->widgets_manager->register_widget_type(new CoffeeShop_Booking_Form_Widget());->start_controls_section(
+            'content_section',
+            [
+                'label' => __('Form Content', 'coffeeshop'),
+                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+            ]
+        );
+
+        $this->add_control(
+            'form_title',
+            [
+                'label' => __('Form Title', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::TEXT,
+                'default' => __('Book a Table', 'coffeeshop'),
+                'placeholder' => __('Enter form title', 'coffeeshop'),
+            ]
+        );
+
+        $this->add_control(
+            'form_description',
+            [
+                'label' => __('Form Description', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::TEXTAREA,
+                'default' => __('Reserve your spot for the perfect coffee experience', 'coffeeshop'),
+                'placeholder' => __('Enter form description', 'coffeeshop'),
+            ]
+        );
+
+        $this->add_control(
+            'show_title',
+            [
+                'label' => __('Show Title', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'show_description',
+            [
+                'label' => __('Show Description', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        // Form Fields Section
+        $this->start_controls_section(
+            'form_fields_section',
+            [
+                'label' => __('Form Fields', 'coffeeshop'),
+                'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+            ]
+        );
+
+        $this->add_control(
+            'name_field_type',
+            [
+                'label' => __('Name Field Type', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => 'separate',
+                'options' => [
+                    'separate' => __('First & Last Name', 'coffeeshop'),
+                    'single' => __('Full Name', 'coffeeshop'),
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'show_phone_field',
+            [
+                'label' => __('Show Phone Field', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'show_occasion_field',
+            [
+                'label' => __('Show Occasion Field', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'show_special_requests',
+            [
+                'label' => __('Show Special Requests', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );
+
+        $this->add_control(
+            'show_newsletter_signup',
+            [
+                'label' => __('Show Newsletter Signup', 'coffeeshop'),
+                'type' => \Elementor\Controls_Manager::SWITCHER,
+                'label_on' => __('Show', 'coffeeshop'),
+                'label_off' => __('Hide', 'coffeeshop'),
+                'return_value' => 'yes',
+                'default' => 'yes',
+            ]
+        );      
+
+            
