@@ -1,0 +1,944 @@
+/* 
+ * Elementor Custom Styles for CoffeeShop Theme
+ * 
+ * @package CoffeeShop
+ */
+
+/* ==========================================================================
+   ELEMENTOR GENERAL STYLES
+   ========================================================================== */
+
+.elementor-widget-container {
+ position: relative;
+}
+
+/* Remove default margins from Elementor sections */
+.elementor-section {
+ margin: 0;
+}
+
+/* Elementor editor fixes */
+.elementor-editor-active .coffeeshop-widget {
+ pointer-events: auto;
+}
+
+/* ==========================================================================
+   COFFEE MENU WIDGET STYLES
+   ========================================================================== */
+
+.coffee-menu-widget {
+ width: 100%;
+}
+
+.coffee-menu-grid {
+ display: grid;
+ gap: 2rem;
+ grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.coffee-menu-list {
+ display: flex;
+ flex-direction: column;
+ gap: 1.5rem;
+}
+
+.coffee-menu-masonry {
+ column-count: auto;
+ column-width: 300px;
+ column-gap: 2rem;
+}
+
+.coffee-menu-masonry .menu-item {
+ break-inside: avoid;
+ margin-bottom: 2rem;
+}
+
+.menu-item {
+ background: #fff;
+ border-radius: var(--border-radius, 8px);
+ overflow: hidden;
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+ transition: all 0.3s ease;
+ position: relative;
+}
+
+.menu-item:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.menu-item.featured-item {
+ border: 2px solid var(--coffeeshop-accent, #8B4513);
+}
+
+.menu-item.featured-item::before {
+ content: 'Featured';
+ position: absolute;
+ top: 10px;
+ right: 10px;
+ background: var(--coffeeshop-accent, #8B4513);
+ color: white;
+ padding: 0.25rem 0.75rem;
+ border-radius: 20px;
+ font-size: 0.8rem;
+ font-weight: 600;
+ z-index: 2;
+}
+
+.menu-item-image {
+ position: relative;
+ height: 200px;
+ overflow: hidden;
+}
+
+.menu-item-image img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ transition: transform 0.3s ease;
+}
+
+.menu-item:hover .menu-item-image img {
+ transform: scale(1.05);
+}
+
+.menu-item-content {
+ padding: 1.5rem;
+}
+
+.menu-item-header {
+ display: flex;
+ justify-content: space-between;
+ align-items: flex-start;
+ margin-bottom: 0.75rem;
+ gap: 1rem;
+}
+
+.menu-item-name {
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ font-size: 1.25rem;
+ font-weight: 700;
+ color: var(--coffeeshop-primary, #6F4E37);
+ margin: 0;
+ flex: 1;
+}
+
+.menu-item-price {
+ font-size: 1.25rem;
+ font-weight: 700;
+ color: var(--coffeeshop-accent, #8B4513);
+ white-space: nowrap;
+}
+
+.menu-item-description {
+ color: #666;
+ line-height: 1.6;
+ margin: 0;
+}
+
+/* List layout specific styles */
+.coffee-menu-list .menu-item {
+ display: flex;
+ align-items: center;
+ gap: 1.5rem;
+}
+
+.coffee-menu-list .menu-item-image {
+ width: 150px;
+ height: 150px;
+ flex-shrink: 0;
+ border-radius: var(--border-radius, 8px);
+}
+
+.coffee-menu-list .menu-item-content {
+ flex: 1;
+}
+
+/* ==========================================================================
+   BARISTA TEAM WIDGET STYLES
+   ========================================================================== */
+
+.barista-team-widget {
+ width: 100%;
+}
+
+.barista-team-grid {
+ display: grid;
+ gap: 2rem;
+ grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.barista-member {
+ background: #fff;
+ border-radius: var(--border-radius, 8px);
+ overflow: hidden;
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+ transition: all 0.3s ease;
+ text-align: center;
+}
+
+.barista-member:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.member-image {
+ width: 100%;
+ height: 250px;
+ overflow: hidden;
+ position: relative;
+}
+
+.member-image img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ transition: transform 0.3s ease;
+}
+
+.barista-member:hover .member-image img {
+ transform: scale(1.05);
+}
+
+.member-info {
+ padding: 1.5rem;
+}
+
+.member-name {
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ font-size: 1.5rem;
+ font-weight: 700;
+ color: var(--coffeeshop-primary, #6F4E37);
+ margin: 0 0 0.5rem 0;
+}
+
+.member-position {
+ color: var(--coffeeshop-accent, #8B4513);
+ font-weight: 600;
+ margin: 0 0 1rem 0;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ font-size: 0.9rem;
+}
+
+.member-specialty,
+.member-experience {
+ background: var(--coffeeshop-light-gray, #f8f8f8);
+ padding: 0.5rem 1rem;
+ margin: 0.5rem 0;
+ border-radius: 20px;
+ font-size: 0.9rem;
+ display: inline-block;
+}
+
+.member-bio {
+ color: #666;
+ line-height: 1.6;
+ margin: 1rem 0;
+ font-style: italic;
+}
+
+.member-social {
+ display: flex;
+ justify-content: center;
+ gap: 0.75rem;
+ margin-top: 1rem;
+}
+
+.member-social a {
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 40px;
+ height: 40px;
+ background: var(--coffeeshop-primary, #6F4E37);
+ color: white;
+ border-radius: 50%;
+ transition: all 0.3s ease;
+ text-decoration: none;
+}
+
+.member-social a:hover {
+ background: var(--coffeeshop-accent, #8B4513);
+ transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   BOOKING FORM WIDGET STYLES
+   ========================================================================== */
+
+.booking-form-widget {
+ background: #fff;
+ padding: 2rem;
+ border-radius: var(--border-radius, 8px);
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.booking-form-title {
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ font-size: 2rem;
+ color: var(--coffeeshop-primary, #6F4E37);
+ text-align: center;
+ margin-bottom: 1rem;
+}
+
+.booking-form-description {
+ text-align: center;
+ color: #666;
+ margin-bottom: 2rem;
+ font-size: 1.1rem;
+}
+
+.booking-form {
+ max-width: 600px;
+ margin: 0 auto;
+}
+
+.form-row {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 1rem;
+ margin-bottom: 1rem;
+}
+
+.form-group {
+ margin-bottom: 1.5rem;
+}
+
+.form-group label {
+ display: block;
+ margin-bottom: 0.5rem;
+ font-weight: 600;
+ color: var(--coffeeshop-primary, #6F4E37);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+ width: 100%;
+ padding: 0.75rem 1rem;
+ border: 2px solid #e0e0e0;
+ border-radius: var(--border-radius, 8px);
+ font-size: 1rem;
+ font-family: inherit;
+ transition: all 0.3s ease;
+ background: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+ outline: none;
+ border-color: var(--coffeeshop-accent, #8B4513);
+ box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+}
+
+.form-group textarea {
+ resize: vertical;
+ min-height: 100px;
+}
+
+.checkbox-label {
+ display: flex;
+ align-items: flex-start;
+ gap: 0.5rem;
+ cursor: pointer;
+ font-weight: normal !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+ width: auto;
+ margin: 0;
+ margin-top: 0.25rem;
+}
+
+.booking-submit-btn {
+ background: var(--coffeeshop-accent, #8B4513);
+ color: white;
+ border: none;
+ padding: 1rem 2rem;
+ border-radius: var(--border-radius, 8px);
+ font-size: 1rem;
+ font-weight: 600;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+ cursor: pointer;
+ transition: all 0.3s ease;
+ width: 100%;
+}
+
+.booking-submit-btn:hover {
+ background: var(--coffeeshop-primary, #6F4E37);
+ transform: translateY(-2px);
+ box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.booking-submit-btn.btn-xs {
+ padding: 0.5rem 1rem;
+ font-size: 0.8rem;
+}
+
+.booking-submit-btn.btn-sm {
+ padding: 0.65rem 1.5rem;
+ font-size: 0.9rem;
+}
+
+.booking-submit-btn.btn-md {
+ padding: 1rem 2rem;
+ font-size: 1rem;
+}
+
+.booking-submit-btn.btn-lg {
+ padding: 1.25rem 2.5rem;
+ font-size: 1.1rem;
+}
+
+.booking-submit-btn.btn-xl {
+ padding: 1.5rem 3rem;
+ font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   TESTIMONIALS WIDGET STYLES
+   ========================================================================== */
+
+.testimonials-widget {
+ width: 100%;
+}
+
+.testimonials-grid {
+ display: grid;
+ gap: 2rem;
+ grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.testimonial-card {
+ background: #fff;
+ padding: 2rem;
+ border-radius: var(--border-radius, 8px);
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+ transition: all 0.3s ease;
+ position: relative;
+}
+
+.testimonial-card::before {
+ content: '"';
+ font-size: 4rem;
+ color: var(--coffeeshop-accent, #8B4513);
+ position: absolute;
+ top: -10px;
+ left: 20px;
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ line-height: 1;
+ opacity: 0.3;
+}
+
+.testimonial-card:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-rating {
+ margin-bottom: 1rem;
+ text-align: center;
+}
+
+.testimonial-rating .star {
+ color: #ddd;
+ font-size: 1.5rem;
+ margin-right: 0.25rem;
+ transition: all 0.3s ease;
+}
+
+.testimonial-rating .star.active {
+ color: #ffd700;
+}
+
+.testimonial-text {
+ font-style: italic;
+ margin-bottom: 1.5rem;
+ color: #666;
+ line-height: 1.6;
+ position: relative;
+ z-index: 1;
+}
+
+.testimonial-author {
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+}
+
+.testimonial-author-image {
+ width: 60px;
+ height: 60px;
+ border-radius: 50%;
+ overflow: hidden;
+ flex-shrink: 0;
+}
+
+.testimonial-author-image img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+}
+
+.testimonial-author-info {
+ flex: 1;
+}
+
+.testimonial-author-name {
+ font-weight: bold;
+ color: var(--coffeeshop-primary, #6F4E37);
+ margin-bottom: 0.25rem;
+}
+
+.testimonial-author-position {
+ color: #666;
+ font-size: 0.9rem;
+ margin: 0;
+}
+
+/* ==========================================================================
+   GALLERY WIDGET STYLES
+   ========================================================================== */
+
+.gallery-widget {
+ width: 100%;
+}
+
+.gallery-grid {
+ display: grid;
+ gap: 1rem;
+ grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.gallery-item {
+ position: relative;
+ overflow: hidden;
+ border-radius: var(--border-radius, 8px);
+ aspect-ratio: 1;
+ cursor: pointer;
+}
+
+.gallery-item img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+ transform: scale(1.1);
+}
+
+.gallery-item::before {
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background: rgba(0, 0, 0, 0.3);
+ opacity: 0;
+ transition: opacity 0.3s ease;
+ z-index: 1;
+}
+
+.gallery-item:hover::before {
+ opacity: 1;
+}
+
+.gallery-item::after {
+ content: '🔍';
+ position: absolute;
+ top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ font-size: 2rem;
+ color: white;
+ opacity: 0;
+ transition: opacity 0.3s ease;
+ z-index: 2;
+}
+
+.gallery-item:hover::after {
+ opacity: 1;
+}
+
+/* ==========================================================================
+   CONTACT INFO WIDGET STYLES
+   ========================================================================== */
+
+.contact-info-widget {
+ background: #fff;
+ padding: 2rem;
+ border-radius: var(--border-radius, 8px);
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info-title {
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ font-size: 1.8rem;
+ color: var(--coffeeshop-primary, #6F4E37);
+ margin-bottom: 1.5rem;
+ text-align: center;
+}
+
+.contact-info-item {
+ display: flex;
+ align-items: flex-start;
+ gap: 1rem;
+ margin-bottom: 1.5rem;
+ padding: 1rem;
+ background: var(--coffeeshop-light-gray, #f8f8f8);
+ border-radius: var(--border-radius, 8px);
+ transition: all 0.3s ease;
+}
+
+.contact-info-item:hover {
+ transform: translateX(5px);
+ box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info-icon {
+ width: 24px;
+ height: 24px;
+ color: var(--coffeeshop-accent, #8B4513);
+ font-size: 1.5rem;
+ flex-shrink: 0;
+ margin-top: 0.25rem;
+}
+
+.contact-info-content h4 {
+ margin: 0 0 0.5rem 0;
+ color: var(--coffeeshop-primary, #6F4E37);
+ font-weight: 600;
+}
+
+.contact-info-content p {
+ margin: 0;
+ color: #666;
+ line-height: 1.5;
+}
+
+.contact-info-content a {
+ color: var(--coffeeshop-accent, #8B4513);
+ text-decoration: none;
+ transition: color 0.3s ease;
+}
+
+.contact-info-content a:hover {
+ color: var(--coffeeshop-primary, #6F4E37);
+}
+
+/* ==========================================================================
+   OPENING HOURS WIDGET STYLES
+   ========================================================================== */
+
+.opening-hours-widget {
+ background: #fff;
+ padding: 2rem;
+ border-radius: var(--border-radius, 8px);
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.opening-hours-title {
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ font-size: 1.8rem;
+ color: var(--coffeeshop-primary, #6F4E37);
+ margin-bottom: 1.5rem;
+ text-align: center;
+}
+
+.opening-hours-list {
+ list-style: none;
+ padding: 0;
+ margin: 0;
+}
+
+.opening-hours-item {
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 0.75rem 1rem;
+ margin-bottom: 0.5rem;
+ background: var(--coffeeshop-light-gray, #f8f8f8);
+ border-radius: var(--border-radius, 8px);
+ transition: all 0.3s ease;
+}
+
+.opening-hours-item:hover {
+ background: var(--coffeeshop-accent, #8B4513);
+ color: white;
+}
+
+.opening-hours-item.today {
+ background: var(--coffeeshop-primary, #6F4E37);
+ color: white;
+}
+
+.opening-hours-day {
+ font-weight: 600;
+}
+
+.opening-hours-time {
+ color: inherit;
+}
+
+.opening-hours-item.closed .opening-hours-time {
+ color: #999;
+ font-style: italic;
+}
+
+/* ==========================================================================
+   FEATURED PRODUCTS WIDGET STYLES
+   ========================================================================== */
+
+.featured-products-widget {
+ width: 100%;
+}
+
+.featured-products-grid {
+ display: grid;
+ gap: 2rem;
+ grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.featured-product-card {
+ background: #fff;
+ border-radius: var(--border-radius, 8px);
+ overflow: hidden;
+ box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+ transition: all 0.3s ease;
+ position: relative;
+}
+
+.featured-product-card:hover {
+ transform: translateY(-5px);
+ box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+.product-badge {
+ position: absolute;
+ top: 10px;
+ left: 10px;
+ background: var(--coffeeshop-accent, #8B4513);
+ color: white;
+ padding: 0.25rem 0.75rem;
+ border-radius: 20px;
+ font-size: 0.8rem;
+ font-weight: 600;
+ z-index: 2;
+}
+
+.product-badge.sale {
+ background: #e74c3c;
+}
+
+.product-badge.new {
+ background: #27ae60;
+}
+
+.featured-product-image {
+ position: relative;
+ height: 200px;
+ overflow: hidden;
+}
+
+.featured-product-image img {
+ width: 100%;
+ height: 100%;
+ object-fit: cover;
+ transition: transform 0.3s ease;
+}
+
+.featured-product-card:hover .featured-product-image img {
+ transform: scale(1.05);
+}
+
+.featured-product-info {
+ padding: 1.5rem;
+}
+
+.featured-product-title {
+ font-family: var(--coffeeshop-font-primary, 'Playfair Display', serif);
+ font-size: 1.25rem;
+ font-weight: 700;
+ color: var(--coffeeshop-primary, #6F4E37);
+ margin: 0 0 0.5rem 0;
+}
+
+.featured-product-price {
+ font-size: 1.25rem;
+ font-weight: 700;
+ color: var(--coffeeshop-accent, #8B4513);
+ margin-bottom: 1rem;
+}
+
+.featured-product-price .original-price {
+ text-decoration: line-through;
+ color: #999;
+ font-size: 1rem;
+ margin-right: 0.5rem;
+}
+
+.featured-product-description {
+ color: #666;
+ line-height: 1.5;
+ margin-bottom: 1rem;
+ font-size: 0.9rem;
+}
+
+.featured-product-button {
+ width: 100%;
+ background: var(--coffeeshop-primary, #6F4E37);
+ color: white;
+ border: none;
+ padding: 0.75rem 1rem;
+ border-radius: var(--border-radius, 8px);
+ font-weight: 600;
+ cursor: pointer;
+ transition: all 0.3s ease;
+}
+
+.featured-product-button:hover {
+ background: var(--coffeeshop-accent, #8B4513);
+ transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+ .form-row {
+  grid-template-columns: 1fr;
+  gap: 0;
+ }
+
+ .coffee-menu-grid,
+ .barista-team-grid,
+ .testimonials-grid,
+ .featured-products-grid {
+  grid-template-columns: 1fr;
+ }
+
+ .coffee-menu-list .menu-item {
+  flex-direction: column;
+  text-align: center;
+ }
+
+ .coffee-menu-list .menu-item-image {
+  width: 100%;
+  height: 200px;
+ }
+
+ .menu-item-header {
+  flex-direction: column;
+  text-align: center;
+  gap: 0.5rem;
+ }
+
+ .booking-form-widget {
+  padding: 1.5rem;
+ }
+
+ .gallery-grid {
+  grid-template-columns: repeat(2, 1fr);
+ }
+}
+
+@media (max-width: 480px) {
+
+ .coffee-menu-grid,
+ .barista-team-grid,
+ .testimonials-grid,
+ .featured-products-grid,
+ .gallery-grid {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+ }
+
+ .booking-form-widget {
+  padding: 1rem;
+ }
+
+ .testimonial-card,
+ .barista-member,
+ .menu-item {
+  padding: 1rem;
+ }
+}
+
+/* ==========================================================================
+   ELEMENTOR EDITOR SPECIFIC STYLES
+   ========================================================================== */
+
+.elementor-editor-active .booking-form {
+ pointer-events: none;
+}
+
+.elementor-editor-active .booking-form input,
+.elementor-editor-active .booking-form select,
+.elementor-editor-active .booking-form textarea,
+.elementor-editor-active .booking-form button {
+ pointer-events: auto;
+}
+
+/* Prevent layout shift in editor */
+.elementor-editor-active .gallery-item::before,
+.elementor-editor-active .gallery-item::after {
+ display: none;
+}
+
+/* ==========================================================================
+   DARK MODE SUPPORT
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+
+ .menu-item,
+ .barista-member,
+ .testimonial-card,
+ .booking-form-widget,
+ .contact-info-widget,
+ .opening-hours-widget,
+ .featured-product-card {
+  background: #2a2a2a;
+  color: #ffffff;
+ }
+
+ .form-group input,
+ .form-group select,
+ .form-group textarea {
+  background: #333;
+  color: #fff;
+  border-color: #555;
+ }
+
+ .contact-info-item,
+ .opening-hours-item {
+  background: #333;
+ }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+
+ .booking-form-widget,
+ .gallery-widget {
+  display: none;
+ }
+
+ .menu-item,
+ .barista-member,
+ .testimonial-card {
+  break-inside: avoid;
+  box-shadow: none;
+  border: 1px solid #ddd;
+ }
+}
