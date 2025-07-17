@@ -1,0 +1,74 @@
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+    xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:wp="http://wordpress.org/export/1.2/">
+
+<channel>
+    <title>CoffeeShop Demo</title>
+    <description>Demo content for CoffeeShop theme</description>
+    <language>en-US</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
+    <wp:base_site_url>https://example.com</wp:base_site_url>
+    <wp:base_blog_url>https://example.com</wp:base_blog_url>
+
+    <!-- Sample Products -->
+    <item>
+        <title>Premium Arabica Blend</title>
+        <description>Rich, full-bodied coffee with notes of chocolate and caramel</description>
+        <wp:post_type>product</wp:post_type>
+        <wp:status>publish</wp:status>
+        <wp:post_date>2024-01-01 00:00:00</wp:post_date>
+        <content:encoded><![CDATA[
+            Our Premium Arabica Blend is carefully crafted from the finest beans sourced from high-altitude regions. With its rich, full-bodied taste and notes of chocolate and caramel, this coffee delivers an exceptional experience in every cup.
+        ]]></content:encoded>
+    </item>
+
+    <item>
+        <title>Ethiopian Single Origin</title>
+        <description>Bright, floral coffee with citrus undertones</description>
+        <wp:post_type>product</wp:post_type>
+        <wp:status>publish</wp:status>
+        <wp:post_date>2024-01-01 00:00:00</wp:post_date>
+        <content:encoded><![CDATA[
+            Experience the unique flavors of Ethiopian coffee with our single origin selection. This bright, floral coffee features distinctive citrus undertones and a clean finish that coffee enthusiasts love.
+        ]]></content:encoded>
+    </item>
+
+    <!-- Sample Pages -->
+    <item>
+        <title>About Us</title>
+        <wp:post_type>page</wp:post_type>
+        <wp:status>publish</wp:status>
+        <wp:post_date>2024-01-01 00:00:00</wp:post_date>
+        <content:encoded><![CDATA[
+            Welcome to our coffee shop! We are passionate about bringing you the finest coffee from around the world. Our journey began with a simple mission: to share exceptional coffee experiences with fellow coffee lovers.
+        ]]></content:encoded>
+    </item>
+
+    <item>
+        <title>Contact</title>
+        <wp:post_type>page</wp:post_type>
+        <wp:status>publish</wp:status>
+        <wp:post_date>2024-01-01 00:00:00</wp:post_date>
+        <content:encoded><![CDATA[
+            Get in touch with us! We'd love to hear from you.
+            
+            Address: 123 Coffee Street, City, State 12345
+            Phone: (555) 123-4567
+            Email: info@coffeeshop.com
+            
+            Store Hours:
+            Monday - Friday: 6:00 AM - 8:00 PM
+            Saturday - Sunday: 7:00 AM - 9:00 PM
+        ]]></content:encoded>
+    </item>
+
+</channel>
+</rss>
+

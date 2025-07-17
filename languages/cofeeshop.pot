@@ -1,0 +1,50 @@
+
+# Copyright (C) 2024 CoffeeShop Theme
+# This file is distributed under the same license as the CoffeeShop Theme package.
+msgid ""
+msgstr ""
+"Project-Id-Version: CoffeeShop Theme 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/coffeeshop\n"
+"POT-Creation-Date: 2024-01-01 00:00:00+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: functions.php:XX
+msgid "Primary Menu"
+msgstr ""
+
+#: functions.php:XX
+msgid "Footer Menu"
+msgstr ""
+
+#: functions.php:XX
+msgid "Sidebar"
+msgstr ""
+
+#: functions.php:XX
+msgid "Add widgets here to appear in your sidebar."
+msgstr ""
+
+#: index.php:XX
+msgid "Premium Coffee Experience"
+msgstr ""
+
+#: index.php:XX
+msgid "Discover our carefully selected coffee beans from around the world"
+msgstr ""
+
+#: index.php:XX
+msgid "Shop Now"
+msgstr ""
+
+#: index.php:XX
+msgid "Featured Products"
+msgstr ""
+
+#: index.php:XX
+msgid "Our most popular coffee selections"
+msgstr ""

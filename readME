@@ -1,0 +1,99 @@
+/\*\*
+
+- README.txt for ThemeForest
+  \*/
+
+=== CoffeeShop WordPress Theme ===
+
+Contributors: Your Name
+Tags: woocommerce, coffee, shop, ecommerce, responsive, modern, brown, elegant
+Requires at least: 5.0
+Tested up to: 6.3
+Requires PHP: 7.4
+Stable tag: 1.0.0
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+
+A modern, elegant WordPress theme designed specifically for coffee shops and online coffee stores.
+
+== Description ==
+
+CoffeeShop is a premium WordPress theme designed specifically for coffee shops, cafes, and online coffee stores. Built with modern design principles and optimized for WooCommerce, this theme offers a perfect blend of elegance and functionality.
+
+= Key Features =
+
+- **WooCommerce Ready**: Full WooCommerce integration with custom styling
+- **Responsive Design**: Looks great on all devices
+- **Color Customization**: Easy color scheme customization through WordPress Customizer
+- **Google Fonts**: Beautiful typography with Google Fonts integration
+- **Performance Optimized**: Fast loading and SEO friendly
+- **Translation Ready**: Full translation support with .pot file included
+- **WPML Compatible**: Multi-language support
+- **Cross-browser Compatible**: Works in all modern browsers
+- **Custom Homepage**: Beautifully designed homepage with hero section, featured products, and more
+- **Product Showcase**: Elegant product display with hover effects
+- **Customer Reviews**: Integrated testimonials section
+- **Newsletter Signup**: Built-in newsletter subscription form
+- **Social Media Integration**: Social media links and sharing options
+
+= Color Scheme =
+
+The theme uses a sophisticated brown and white color palette:
+
+- Primary Color: #6F4E37 (Rich Brown)
+- Secondary Color: #FFFFFF (Pure White)
+- Accent Color: #8B4513 (Saddle Brown)
+
+= Installation =
+
+1. Upload the theme files to `/wp-content/themes/coffeeshop/`
+2. Activate the theme through WordPress admin
+3. Install and activate WooCommerce plugin
+4. Import demo content (optional)
+5. Customize through WordPress Customizer
+
+= Demo Content =
+
+The theme includes sample content to help you get started quickly:
+
+- Sample products
+- Homepage layout
+- Menu structure
+- Widget content
+
+= Customization =
+
+Use WordPress Customizer to:
+
+- Change colors
+- Upload logo
+- Customize typography
+- Set homepage content
+- Configure WooCommerce settings
+
+= Support =
+
+For support and documentation, please visit our support forum or contact us directly.
+
+== Installation ==
+
+1. In your admin panel, go to Appearance > Themes and click the Add New button.
+2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
+3. Click Activate to use your new theme right away.
+
+== Changelog ==
+
+= 1.0.0 =
+
+- Initial release
+- WooCommerce integration
+- Responsive design
+- Color customization
+- Google Fonts integration
+- Translation ready
+
+== Credits ==
+
+- Google Fonts: https://fonts.google.com/
+- Font Awesome: https://fontawesome.com/
+- WooCommerce: https://woocommerce.com/
