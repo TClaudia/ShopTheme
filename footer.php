@@ -1,97 +1,118 @@
-</div><!-- #content -->
+<?php
+/**
+ * The template for displaying the footer
+ *
+ * Contains the closing of the #content div and all content after.
+ *
+ * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
+ *
+ * @package CoffeeShop
+ * @since 1.0.0
+ */
 
-    <footer id="colophon" class="site-footer">
-        <div class="container">
-            <div class="footer-content">
-                <?php if (is_active_sidebar('footer-1')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-1'); ?>
-                    </div>
-                <?php else : ?>
-                    <div class="footer-section">
-                        <h3><?php _e('About CoffeeShop', 'coffeeshop'); ?></h3>
-                        <p><?php _e('We are passionate about serving the finest coffee and creating memorable experiences for our customers. Visit us today!', 'coffeeshop'); ?></p>
-                        <div class="social-links">
-                            <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        </div>
-                    </div>
-                <?php endif; ?>
+?>
 
-                <?php if (is_active_sidebar('footer-2')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-2'); ?>
-                    </div>
-                <?php else : ?>
-                    <div class="footer-section">
-                        <h3><?php _e('Quick Links', 'coffeeshop'); ?></h3>
-                        <ul>
-                            <li><a href="<?php echo home_url(); ?>"><?php _e('Home', 'coffeeshop'); ?></a></li>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('about')); ?>"><?php _e('About Us', 'coffeeshop'); ?></a></li>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('menu')); ?>"><?php _e('Menu', 'coffeeshop'); ?></a></li>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('barista')); ?>"><?php _e('Our Baristas', 'coffeeshop'); ?></a></li>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('contact')); ?>"><?php _e('Contact', 'coffeeshop'); ?></a></li>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+	</div><!-- #content -->
 
-                <?php if (is_active_sidebar('footer-3')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-3'); ?>
-                    </div>
-                <?php else : ?>
-                    <div class="footer-section">
-                        <h3><?php _e('Services', 'coffeeshop'); ?></h3>
-                        <ul>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('book')); ?>"><?php _e('Book a Table', 'coffeeshop'); ?></a></li>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('gallery')); ?>"><?php _e('Gallery', 'coffeeshop'); ?></a></li>
-                            <li><a href="<?php echo get_permalink(get_page_by_path('faq')); ?>"><?php _e('FAQ', 'coffeeshop'); ?></a></li>
-                            <?php if (class_exists('WooCommerce')) : ?>
-                                <li><a href="<?php echo wc_get_page_permalink('shop'); ?>"><?php _e('Shop', 'coffeeshop'); ?></a></li>
-                                <li><a href="<?php echo wc_get_page_permalink('cart'); ?>"><?php _e('Cart', 'coffeeshop'); ?></a></li>
-                            <?php endif; ?>
-                        </ul>
-                    </div>
-                <?php endif; ?>
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		
+		<?php if (is_active_sidebar('footer-1') || is_active_sidebar('footer-2') || is_active_sidebar('footer-3') || is_active_sidebar('footer-4')) : ?>
+			<div class="footer-widgets">
+				<div class="container">
+					<div class="footer-content">
+						
+						<?php if (is_active_sidebar('footer-1')) : ?>
+							<div class="footer-section footer-1">
+								<?php dynamic_sidebar('footer-1'); ?>
+							</div>
+						<?php endif; ?>
+						
+						<?php if (is_active_sidebar('footer-2')) : ?>
+							<div class="footer-section footer-2">
+								<?php dynamic_sidebar('footer-2'); ?>
+							</div>
+						<?php endif; ?>
+						
+						<?php if (is_active_sidebar('footer-3')) : ?>
+							<div class="footer-section footer-3">
+								<?php dynamic_sidebar('footer-3'); ?>
+							</div>
+						<?php endif; ?>
+						
+						<?php if (is_active_sidebar('footer-4')) : ?>
+							<div class="footer-section footer-4">
+								<?php dynamic_sidebar('footer-4'); ?>
+							</div>
+						<?php endif; ?>
+						
+					</div><!-- .footer-content -->
+				</div><!-- .container -->
+			</div><!-- .footer-widgets -->
+		<?php endif; ?>
 
-                <?php if (is_active_sidebar('footer-4')) : ?>
-                    <div class="footer-section">
-                        <?php dynamic_sidebar('footer-4'); ?>
-                    </div>
-                <?php else : ?>
-                    <div class="footer-section">
-                        <h3><?php _e('Contact Info', 'coffeeshop'); ?></h3>
-                        <div class="contact-info">
-                            <p><i class="fas fa-map-marker-alt"></i> 123 Coffee Street, Downtown District, City, State 12345</p>
-                            <p><i class="fas fa-phone"></i> <a href="tel:+1234567890">(123) 456-7890</a></p>
-                            <p><i class="fas fa-envelope"></i> <a href="mailto:info@coffeeshop.com">info@coffeeshop.com</a></p>
-                            <p><i class="fas fa-clock"></i> Mon-Fri: 6AM-8PM, Sat-Sun: 7AM-9PM</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
-            </div>
-
-            <div class="footer-bottom">
-                <div class="footer-bottom-content">
-                    <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?>. <?php _e('All rights reserved.', 'coffeeshop'); ?></p>
-                    <div class="footer-bottom-links">
-                        <a href="#"><?php _e('Privacy Policy', 'coffeeshop'); ?></a>
-                        <a href="#"><?php _e('Terms of Service', 'coffeeshop'); ?></a>
-                        <a href="#"><?php _e('Cookie Policy', 'coffeeshop'); ?></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <button id="scroll-to-top" class="scroll-to-top" aria-label="<?php _e('Scroll to top', 'coffeeshop'); ?>">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+		<!-- Footer Bottom -->
+		<div class="footer-bottom">
+			<div class="container">
+				<div class="footer-bottom-content">
+					
+					<div class="site-info">
+						<?php
+						$copyright_text = get_theme_mod('coffeeshop_copyright_text');
+						if ($copyright_text) :
+							echo wp_kses_post($copyright_text);
+						else :
+							printf(
+								/* translators: 1: Copyright year, 2: Site name, 3: Theme name, 4: Theme author */
+								esc_html__('© %1$s %2$s. Powered by %3$s theme by %4$s.', 'coffeeshop'),
+								date('Y'),
+								get_bloginfo('name'),
+								'<a href="https://wordpress.org/" rel="nofollow">WordPress</a>',
+								'<a href="' . esc_url('https://yourwebsite.com/') . '" rel="nofollow">YourCompany</a>'
+							);
+						endif;
+						?>
+					</div><!-- .site-info -->
+					
+					<!-- Footer Menu -->
+					<?php if (has_nav_menu('footer')) : ?>
+						<nav class="footer-navigation" role="navigation" aria-label="<?php esc_attr_e('Footer Menu', 'coffeeshop'); ?>">
+							<?php
+							wp_nav_menu(
+								array(
+									'theme_location' => 'footer',
+									'menu_class'     => 'footer-menu',
+									'container'      => false,
+									'depth'          => 1,
+									'fallback_cb'    => false,
+								)
+							);
+							?>
+						</nav>
+					<?php endif; ?>
+					
+					<!-- Social Links -->
+					<?php if (get_theme_mod('coffeeshop_enable_footer_social', true)) : ?>
+						<div class="footer-social">
+							<?php coffeeshop_social_links(); ?>
+						</div>
+					<?php endif; ?>
+					
+				</div><!-- .footer-bottom-content -->
+			</div><!-- .container -->
+		</div><!-- .footer-bottom -->
+		
+	</footer><!-- #colophon -->
+	
+	<!-- Back to Top Button -->
+	<?php if (get_theme_mod('coffeeshop_enable_scroll_top', true)) : ?>
+		<button class="back-to-top" aria-label="<?php esc_attr_e('Back to top', 'coffeeshop'); ?>" title="<?php esc_attr_e('Back to top', 'coffeeshop'); ?>">
+			<i class="fas fa-chevron-up" aria-hidden="true"></i>
+		</button>
+	<?php endif; ?>
+	
 </div><!-- #page -->
 
 <?php wp_footer(); ?>
+
 </body>
 </html>

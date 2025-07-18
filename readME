@@ -1,99 +1,525 @@
-/\*\*
+# CoffeeShop Pro WordPress Theme
 
-- README.txt for ThemeForest
-  \*/
+**Version:** 2.1.0  
+**Author:** YourCompany  
+**License:** GPL v2 or later  
+**Tags:** woocommerce, coffee, restaurant, food, ecommerce, responsive, elementor, customizer, business
 
-=== CoffeeShop WordPress Theme ===
+## Description
 
-Contributors: Your Name
-Tags: woocommerce, coffee, shop, ecommerce, responsive, modern, brown, elegant
-Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 7.4
-Stable tag: 1.0.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+CoffeeShop Pro is a premium WordPress theme designed specifically for coffee shops, cafes, restaurants, and online coffee stores. Built with modern design principles and optimized for performance, this theme offers a perfect blend of elegance and functionality.
 
-A modern, elegant WordPress theme designed specifically for coffee shops and online coffee stores.
+## Features
 
-== Description ==
+### 🎨 Design & Layout
 
-CoffeeShop is a premium WordPress theme designed specifically for coffee shops, cafes, and online coffee stores. Built with modern design principles and optimized for WooCommerce, this theme offers a perfect blend of elegance and functionality.
+- **Modern Professional Design** - Clean, elegant layout perfect for coffee businesses
+- **Fully Responsive** - Looks great on all devices (desktop, tablet, mobile)
+- **Retina Ready** - Crisp display on high-resolution screens
+- **Color Customization** - Easy color scheme customization through WordPress Customizer
+- **Google Fonts Integration** - Beautiful typography with 800+ Google Fonts
+- **Custom Logo Support** - Easy logo upload and customization
 
-= Key Features =
+### 🛒 E-commerce Ready
 
-- **WooCommerce Ready**: Full WooCommerce integration with custom styling
-- **Responsive Design**: Looks great on all devices
-- **Color Customization**: Easy color scheme customization through WordPress Customizer
-- **Google Fonts**: Beautiful typography with Google Fonts integration
-- **Performance Optimized**: Fast loading and SEO friendly
-- **Translation Ready**: Full translation support with .pot file included
-- **WPML Compatible**: Multi-language support
-- **Cross-browser Compatible**: Works in all modern browsers
-- **Custom Homepage**: Beautifully designed homepage with hero section, featured products, and more
-- **Product Showcase**: Elegant product display with hover effects
-- **Customer Reviews**: Integrated testimonials section
-- **Newsletter Signup**: Built-in newsletter subscription form
-- **Social Media Integration**: Social media links and sharing options
+- **WooCommerce Compatible** - Full WooCommerce integration with custom styling
+- **Product Showcase** - Elegant product display with hover effects
+- **Shopping Cart Integration** - Header cart with dropdown mini-cart
+- **Checkout Optimization** - Streamlined checkout process
+- **Payment Gateway Support** - Compatible with all major payment gateways
 
-= Color Scheme =
+### 🔧 Customization Options
 
-The theme uses a sophisticated brown and white color palette:
+- **WordPress Customizer** - Live preview customization
+- **Elementor Compatible** - Drag-and-drop page building
+- **Custom Post Types** - Menu items, testimonials, team members
+- **Widget Areas** - Multiple widget-ready areas
+- **Menu Locations** - Primary, footer, and mobile menus
+- **Custom CSS Panel** - Add your own custom styles
 
-- Primary Color: #6F4E37 (Rich Brown)
-- Secondary Color: #FFFFFF (Pure White)
-- Accent Color: #8B4513 (Saddle Brown)
+### 📱 Performance & SEO
 
-= Installation =
+- **Fast Loading** - Optimized for speed and performance
+- **SEO Optimized** - Schema markup and clean code structure
+- **Translation Ready** - WPML and Polylang compatible
+- **RTL Support** - Right-to-left language support
+- **Cross-browser Compatible** - Works in all modern browsers
 
-1. Upload the theme files to `/wp-content/themes/coffeeshop/`
-2. Activate the theme through WordPress admin
-3. Install and activate WooCommerce plugin
-4. Import demo content (optional)
-5. Customize through WordPress Customizer
+### ♿ Accessibility
 
-= Demo Content =
+- **WCAG 2.1 Compliant** - Accessible to all users
+- **Keyboard Navigation** - Full keyboard navigation support
+- **Screen Reader Friendly** - Proper ARIA labels and semantic markup
+- **Focus Management** - Clear focus indicators
+- **Alt Text Support** - Image accessibility features
 
-The theme includes sample content to help you get started quickly:
+## Installation
 
-- Sample products
-- Homepage layout
-- Menu structure
-- Widget content
+### Automatic Installation
 
-= Customization =
+1. Log in to your WordPress admin panel
+2. Go to Appearance > Themes
+3. Click "Add New" and then "Upload Theme"
+4. Choose the theme ZIP file and click "Install Now"
+5. Click "Activate" to use the theme
 
-Use WordPress Customizer to:
+### Manual Installation
 
-- Change colors
-- Upload logo
-- Customize typography
-- Set homepage content
-- Configure WooCommerce settings
+1. Extract the theme ZIP file
+2. Upload the extracted folder to `/wp-content/themes/`
+3. Go to Appearance > Themes in WordPress admin
+4. Activate "CoffeeShop Pro"
 
-= Support =
+### Required Plugins
 
-For support and documentation, please visit our support forum or contact us directly.
+The theme will prompt you to install these recommended plugins:
 
-== Installation ==
+- **WooCommerce** - For e-commerce functionality
+- **Elementor** - For advanced page building
+- **Contact Form 7** - For contact forms
 
-1. In your admin panel, go to Appearance > Themes and click the Add New button.
-2. Click Upload Theme and Choose File, then select the theme's .zip file. Click Install Now.
-3. Click Activate to use your new theme right away.
+## Setup Guide
 
-== Changelog ==
+### 1. Theme Activation
 
-= 1.0.0 =
+After activating the theme:
+
+- Sample pages will be created automatically
+- Default customizer settings will be applied
+- Required plugins notification will appear
+
+### 2. Customizer Settings
+
+Go to **Appearance > Customize** to configure:
+
+#### Site Identity
+
+- Upload your logo
+- Set site title and tagline
+- Upload site icon (favicon)
+
+#### Colors
+
+- Primary Color (default: #8B4513)
+- Secondary Color (default: #FFFFFF)
+- Accent Color (default: #D2691E)
+- Custom color schemes
+
+#### Typography
+
+- Font families for headings and body text
+- Font sizes and weights
+- Line heights and letter spacing
+
+#### Header Settings
+
+- Header layout options
+- Enable/disable search in header
+- Enable/disable shopping cart
+- Social media links
+- Language switcher options
+
+#### Homepage Settings
+
+- Hero section content
+- Featured products section
+- About section content
+- Testimonials
+- Blog section settings
+
+#### Footer Settings
+
+- Footer widget areas
+- Copyright text
+- Social media links
+- Footer menu
+
+### 3. Menu Setup
+
+Go to **Appearance > Menus**:
+
+1. Create a new menu
+2. Add pages/links to your menu
+3. Assign to "Primary Menu" location
+4. Create footer menu (optional)
+
+### 4. Widget Setup
+
+Go to **Appearance > Widgets**:
+
+- **Primary Sidebar** - Blog/page sidebar widgets
+- **Footer Area 1-4** - Footer column widgets
+- **Shop Sidebar** - WooCommerce sidebar widgets
+
+### 5. WooCommerce Setup
+
+If using e-commerce features:
+
+1. Install and activate WooCommerce
+2. Run WooCommerce setup wizard
+3. Add your products
+4. Configure payment and shipping
+5. Set up product categories
+
+## Page Templates
+
+### Special Page Templates
+
+- **Homepage** - `page-home.php` - Custom homepage template
+- **Menu Page** - `page-menu.php` - Coffee menu display
+- **About Page** - `page-about.php` - About us template
+- **Contact Page** - `page-contact.php` - Contact information
+- **FAQ Page** - `page-faq.php` - Frequently asked questions
+
+### WooCommerce Templates
+
+- Shop page with custom styling
+- Single product pages
+- Cart and checkout pages
+- My account pages
+
+## Customization
+
+### Theme Options
+
+Access via **Appearance > Customize**:
+
+#### Layout Options
+
+- Container width settings
+- Sidebar positions
+- Header/footer layouts
+- Mobile menu styles
+
+#### Performance Settings
+
+- Enable/disable animations
+- Lazy loading options
+- JavaScript optimization
+- CSS minification
+
+#### Advanced Settings
+
+- Custom CSS panel
+- Custom JavaScript
+- Google Analytics integration
+- Schema markup options
+
+### Child Theme Support
+
+For custom modifications, create a child theme:
+
+```php
+<?php
+// child-theme/functions.php
+add_action('wp_enqueue_scripts', 'child_theme_styles');
+function child_theme_styles() {
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+    wp_enqueue_style('child-style', get_stylesheet_directory_uri() . '/style.css', array('parent-style'));
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Theme Not Loading Properly
+
+1. Check WordPress version compatibility (5.0+)
+2. Verify PHP version (7.4+)
+3. Deactivate conflicting plugins
+4. Clear caching if using cache plugins
+
+#### WooCommerce Issues
+
+1. Update WooCommerce to latest version
+2. Clear WooCommerce cache
+3. Check product settings
+4. Verify payment gateway configuration
+
+#### Performance Issues
+
+1. Optimize images before uploading
+2. Use a caching plugin
+3. Enable GZIP compression
+4. Use a CDN for better loading speeds
+
+#### Mobile Display Issues
+
+1. Test on actual devices
+2. Check responsive settings in Customizer
+3. Verify CSS media queries
+4. Clear browser cache
+
+### Debug Mode
+
+To enable debug mode, add to `wp-config.php`:
+
+```php
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+```
+
+## File Structure
+
+```
+coffeeshop/
+├── assets/
+│   ├── css/
+│   │   ├── admin.css
+│   │   ├── editor-style.css
+│   │   └── responsive.css
+│   ├── js/
+│   │   ├── custom.js
+│   │   ├── navigation.js
+│   │   └── block-editor.js
+│   └── images/
+├── inc/
+│   ├── admin.php
+│   ├── customizer.php
+│   ├── template-functions.php
+│   ├── template-tags.php
+│   ├── woocommerce.php
+│   ├── elementor.php
+│   └── class-tgm-plugin-activation.php
+├── languages/
+│   └── coffeeshop.pot
+├── template-parts/
+│   ├── header/
+│   ├── footer/
+│   └── content/
+├── page-templates/
+│   ├── page-home.php
+│   ├── page-menu.php
+│   ├── page-about.php
+│   └── page-contact.php
+├── woocommerce/
+│   └── [WooCommerce template overrides]
+├── functions.php
+├── style.css
+├── index.php
+├── header.php
+├── footer.php
+├── sidebar.php
+├── single.php
+├── page.php
+├── archive.php
+├── search.php
+├── 404.php
+├── comments.php
+├── screenshot.png
+└── README.txt
+```
+
+## Hooks & Filters
+
+### Theme Hooks
+
+```php
+// Header hooks
+do_action('coffeeshop_header_before');
+do_action('coffeeshop_header_after');
+
+// Content hooks
+do_action('coffeeshop_content_before');
+do_action('coffeeshop_content_after');
+
+// Footer hooks
+do_action('coffeeshop_footer_before');
+do_action('coffeeshop_footer_after');
+```
+
+### Custom Filters
+
+```php
+// Modify excerpt length
+add_filter('coffeeshop_excerpt_length', function($length) {
+    return 30; // Change excerpt length
+});
+
+// Modify color schemes
+add_filter('coffeeshop_color_schemes', function($schemes) {
+    $schemes['custom'] = array(
+        'primary' => '#custom-color',
+        'secondary' => '#another-color'
+    );
+    return $schemes;
+});
+```
+
+## Browser Support
+
+### Supported Browsers
+
+- **Chrome** - Latest 2 versions
+- **Firefox** - Latest 2 versions
+- **Safari** - Latest 2 versions
+- **Edge** - Latest 2 versions
+- **Opera** - Latest 2 versions
+
+### Mobile Support
+
+- **iOS Safari** - iOS 12+
+- **Chrome Mobile** - Latest version
+- **Samsung Internet** - Latest version
+- **UC Browser** - Latest version
+
+## SEO Features
+
+### Built-in SEO
+
+- Clean HTML5 markup
+- Schema.org microdata
+- Open Graph meta tags
+- Twitter Card support
+- Breadcrumb navigation
+- XML sitemap compatibility
+
+### Recommended SEO Plugins
+
+- **Yoast SEO** - Complete SEO solution
+- **RankMath** - Advanced SEO features
+- **All in One SEO** - User-friendly SEO
+
+## Translation
+
+### Available Languages
+
+- English (default)
+- Spanish (es_ES)
+- French (fr_FR)
+- German (de_DE)
+- Italian (it_IT)
+- Portuguese (pt_BR)
+
+### Translation Ready
+
+The theme includes:
+
+- Complete `.pot` file for translation
+- WPML compatibility
+- Polylang support
+- RTL language support
+
+### Custom Translation
+
+1. Use Poedit or similar software
+2. Load the `.pot` file from `/languages/`
+3. Translate strings
+4. Save as `coffeeshop-{locale}.po` and `.mo`
+5. Upload to `/wp-content/languages/themes/`
+
+## Performance Optimization
+
+### Built-in Optimizations
+
+- Minified CSS and JavaScript
+- Optimized database queries
+- Lazy loading support
+- Efficient image handling
+- Clean code structure
+
+### Recommended Plugins
+
+- **WP Rocket** - Caching and performance
+- **Smush** - Image optimization
+- **Cloudflare** - CDN and security
+- **Autoptimize** - CSS/JS optimization
+
+## Security Features
+
+### Built-in Security
+
+- Sanitized inputs and outputs
+- Nonce verification
+- Capability checks
+- XSS protection
+- SQL injection prevention
+
+### Security Headers
+
+- X-Content-Type-Options
+- X-Frame-Options
+- X-XSS-Protection
+- Referrer-Policy
+
+## Changelog
+
+### Version 2.1.0
+
+- Added Elementor compatibility
+- Improved WooCommerce integration
+- Enhanced accessibility features
+- Added RTL language support
+- Performance optimizations
+- New customizer options
+- Bug fixes and improvements
+
+### Version 2.0.0
+
+- Complete theme redesign
+- Added block editor support
+- Improved responsive design
+- New homepage sections
+- Enhanced customization options
+- Better SEO optimization
+
+### Version 1.0.0
 
 - Initial release
-- WooCommerce integration
+- Basic WooCommerce support
 - Responsive design
-- Color customization
-- Google Fonts integration
-- Translation ready
+- WordPress Customizer integration
 
-== Credits ==
+## Support
 
-- Google Fonts: https://fonts.google.com/
-- Font Awesome: https://fontawesome.com/
-- WooCommerce: https://woocommerce.com/
+### Documentation
+
+- **Online Documentation:** https://docs.yourwebsite.com/coffeeshop-pro
+- **Video Tutorials:** https://youtube.com/yourcompany
+- **Knowledge Base:** https://support.yourwebsite.com
+
+### Getting Help
+
+1. Check this documentation first
+2. Search existing support tickets
+3. Contact support with:
+   - WordPress version
+   - Theme version
+   - Plugin list
+   - Error messages
+   - Screenshots
+
+### Support Channels
+
+- **Support Forum:** https://support.yourwebsite.com
+- **Email Support:** support@yourwebsite.com
+- **Response Time:** 24-48 hours
+
+## License & Credits
+
+### Theme License
+
+This theme is licensed under GPL v2 or later.
+
+- https://www.gnu.org/licenses/gpl-2.0.html
+
+### Third-party Resources
+
+- **Font Awesome:** https://fontawesome.com (SIL OFL 1.1)
+- **Google Fonts:** https://fonts.google.com (SIL OFL 1.1)
+- **Normalize.css:** https://necolas.github.io/normalize.css (MIT)
+- **TGM Plugin Activation:** http://tgmpluginactivation.com (GPL v2+)
+
+### Images
+
+- Demo images are for preview only
+- Replace with your own licensed images
+- Unsplash images used in demo (Unsplash License)
+
+---
+
+**Thank you for choosing CoffeeShop Pro!**
+
+For the latest updates and news, visit: https://yourwebsite.com

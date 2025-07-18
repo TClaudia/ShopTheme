@@ -1,98 +1,123 @@
 <?php
 /**
- * Theme Name: CoffeeShop Pro
- * Description: Modern, professional WordPress theme for coffee shops with Elementor integration and drag-and-drop customization
- * Version: 2.0.0
- * Author: Your Name
- * License: GPL v2 or later
- * Text Domain: coffeeshop
- * Domain Path: /languages
- * 
- * WC requires at least: 3.0
- * WC tested up to: 8.0
- * Elementor tested up to: 3.15.0
- * 
+ * CoffeeShop Pro Theme Functions
+ *
  * @package CoffeeShop
+ * @version 2.1.0
+ * @since 1.0.0
  */
 
 // Prevent direct access
 if (!defined('ABSPATH')) {
-    exit;
+    exit('Direct access forbidden.');
 }
 
 // Define theme constants
-define('COFFEESHOP_VERSION', '2.0.0');
+define('COFFEESHOP_VERSION', '2.1.0');
 define('COFFEESHOP_THEME_DIR', get_template_directory());
 define('COFFEESHOP_THEME_URL', get_template_directory_uri());
+define('COFFEESHOP_THEME_NAME', 'CoffeeShop Pro');
 
 /**
- * Theme setup
+ * Theme Setup
+ * Required by ThemeForest
  */
 function coffeeshop_setup() {
-    // Load text domain
+    // Make theme available for translation
     load_theme_textdomain('coffeeshop', get_template_directory() . '/languages');
-    
-    // Add default posts and comments RSS feed links
+
+    // Add default posts and comments RSS feed links to head
     add_theme_support('automatic-feed-links');
-    
+
+    // Let WordPress manage the document title
+    add_theme_support('title-tag');
+
     // Enable support for Post Thumbnails
     add_theme_support('post-thumbnails');
-    
+
     // Enable support for HTML5 markup
     add_theme_support('html5', array(
+        'search-form',
         'comment-form',
         'comment-list',
         'gallery',
         'caption',
         'style',
         'script',
-        'navigation-widgets',
     ));
-    
+
+    // Set up the WordPress core custom background feature
+    add_theme_support('custom-background', apply_filters('coffeeshop_custom_background_args', array(
+        'default-color' => 'ffffff',
+        'default-image' => '',
+    )));
+
+    // Add theme support for selective refresh for widgets
+    add_theme_support('customize-selective-refresh-widgets');
+
     // Add support for core custom logo
     add_theme_support('custom-logo', array(
-        'height'      => 60,
-        'width'       => 200,
+        'height'      => 250,
+        'width'       => 250,
         'flex-width'  => true,
         'flex-height' => true,
     ));
-    
-    // Add support for selective refresh for widgets
-    add_theme_support('customize-selective-refresh-widgets');
-    
-    // Add support for responsive embeds
-    add_theme_support('responsive-embeds');
-    
-    // Add support for editor styles
-    add_theme_support('editor-styles');
-    
-    // Add support for WooCommerce
-    add_theme_support('woocommerce');
+
+    // Add support for custom header
+    add_theme_support('custom-header', array(
+        'default-image'          => '',
+        'width'                  => 1920,
+        'height'                 => 1080,
+        'flex-height'            => true,
+        'flex-width'             => true,
+        'uploads'                => true,
+        'random-default'         => false,
+        'header-text'            => true,
+        'default-text-color'     => '000',
+        'wp-head-callback'       => '',
+        'admin-head-callback'    => '',
+        'admin-preview-callback' => '',
+    ));
+
+    // WooCommerce support
+    add_theme_support('woocommerce', array(
+        'thumbnail_image_width' => 300,
+        'gallery_thumbnail_image_width' => 100,
+        'single_image_width' => 600,
+        'product_grid' => array(
+            'default_rows'    => 3,
+            'min_rows'        => 2,
+            'max_rows'        => 8,
+            'default_columns' => 4,
+            'min_columns'     => 2,
+            'max_columns'     => 5,
+        ),
+    ));
     add_theme_support('wc-product-gallery-zoom');
     add_theme_support('wc-product-gallery-lightbox');
     add_theme_support('wc-product-gallery-slider');
-    
-    // Add support for Elementor
+
+    // Elementor support
     add_theme_support('elementor');
-    
+
     // Register navigation menus
     register_nav_menus(array(
-        'primary' => __('Primary Menu', 'coffeeshop'),
-        'footer'  => __('Footer Menu', 'coffeeshop'),
-        'mobile'  => __('Mobile Menu', 'coffeeshop'),
+        'primary' => esc_html__('Primary Menu', 'coffeeshop'),
+        'footer'  => esc_html__('Footer Menu', 'coffeeshop'),
+        'mobile'  => esc_html__('Mobile Menu', 'coffeeshop'),
     ));
-    
+
     // Add image sizes
-    add_image_size('coffeeshop-hero', 1920, 1080, true);
-    add_image_size('coffeeshop-featured', 800, 600, true);
-    add_image_size('coffeeshop-thumb', 400, 300, true);
-    add_image_size('coffeeshop-gallery', 600, 400, true);
-    add_image_size('coffeeshop-barista', 300, 300, true);
+    add_image_size('coffeeshop-featured', 800, 450, true);
+    add_image_size('coffeeshop-gallery', 400, 400, true);
+    add_image_size('coffeeshop-product', 300, 300, true);
+    add_image_size('coffeeshop-blog-thumb', 300, 200, true);
 }
 add_action('after_setup_theme', 'coffeeshop_setup');
 
 /**
- * Set content width
+ * Content Width
+ * Required by ThemeForest
  */
 function coffeeshop_content_width() {
     $GLOBALS['content_width'] = apply_filters('coffeeshop_content_width', 1200);
@@ -100,101 +125,129 @@ function coffeeshop_content_width() {
 add_action('after_setup_theme', 'coffeeshop_content_width', 0);
 
 /**
- * Register widget areas
+ * Enqueue Styles and Scripts
+ * Required by ThemeForest
+ */
+function coffeeshop_scripts() {
+    // Google Fonts
+    wp_enqueue_style('coffeeshop-fonts', 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@300;400;500;600;700&display=swap', array(), null);
+
+    // Font Awesome
+    wp_enqueue_style('font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css', array(), '6.4.0');
+
+    // Main stylesheet
+    wp_enqueue_style('coffeeshop-style', get_stylesheet_uri(), array(), COFFEESHOP_VERSION);
+
+    // Additional CSS files
+    wp_enqueue_style('coffeeshop-responsive', get_template_directory_uri() . '/assets/css/responsive.css', array('coffeeshop-style'), COFFEESHOP_VERSION);
+
+    // JavaScript files
+    wp_enqueue_script('coffeeshop-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array('jquery'), COFFEESHOP_VERSION, true);
+    wp_enqueue_script('coffeeshop-custom', get_template_directory_uri() . '/assets/js/custom.js', array('jquery'), COFFEESHOP_VERSION, true);
+
+    // Localize script for AJAX
+    wp_localize_script('coffeeshop-custom', 'coffeeshop_ajax', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce'    => wp_create_nonce('coffeeshop_nonce'),
+        'strings'  => array(
+            'loading' => esc_html__('Loading...', 'coffeeshop'),
+            'error'   => esc_html__('Error occurred. Please try again.', 'coffeeshop'),
+        ),
+    ));
+
+    // Comment reply script
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}
+add_action('wp_enqueue_scripts', 'coffeeshop_scripts');
+
+/**
+ * Admin Styles
+ */
+function coffeeshop_admin_styles() {
+    wp_enqueue_style('coffeeshop-admin', get_template_directory_uri() . '/assets/css/admin.css', array(), COFFEESHOP_VERSION);
+}
+add_action('admin_enqueue_scripts', 'coffeeshop_admin_styles');
+
+/**
+ * Register Widget Areas
+ * Required by ThemeForest
  */
 function coffeeshop_widgets_init() {
-    // Sidebar
     register_sidebar(array(
-        'name'          => __('Sidebar', 'coffeeshop'),
+        'name'          => esc_html__('Primary Sidebar', 'coffeeshop'),
         'id'            => 'sidebar-1',
-        'description'   => __('Add widgets here to appear in your sidebar.', 'coffeeshop'),
+        'description'   => esc_html__('Add widgets here to appear in your sidebar.', 'coffeeshop'),
         'before_widget' => '<section id="%1$s" class="widget %2$s">',
         'after_widget'  => '</section>',
-        'before_title'  => '<h2 class="widget-title">',
-        'after_title'   => '</h2>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
     ));
-    
-    // Footer widgets
-    for ($i = 1; $i <= 4; $i++) {
+
+    register_sidebar(array(
+        'name'          => esc_html__('Footer Area 1', 'coffeeshop'),
+        'id'            => 'footer-1',
+        'description'   => esc_html__('Add widgets here to appear in your footer.', 'coffeeshop'),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    register_sidebar(array(
+        'name'          => esc_html__('Footer Area 2', 'coffeeshop'),
+        'id'            => 'footer-2',
+        'description'   => esc_html__('Add widgets here to appear in your footer.', 'coffeeshop'),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    register_sidebar(array(
+        'name'          => esc_html__('Footer Area 3', 'coffeeshop'),
+        'id'            => 'footer-3',
+        'description'   => esc_html__('Add widgets here to appear in your footer.', 'coffeeshop'),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    register_sidebar(array(
+        'name'          => esc_html__('Footer Area 4', 'coffeeshop'),
+        'id'            => 'footer-4',
+        'description'   => esc_html__('Add widgets here to appear in your footer.', 'coffeeshop'),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="widget-title">',
+        'after_title'   => '</h4>',
+    ));
+
+    // WooCommerce Sidebar
+    if (class_exists('WooCommerce')) {
         register_sidebar(array(
-            'name'          => sprintf(__('Footer %d', 'coffeeshop'), $i),
-            'id'            => 'footer-' . $i,
-            'description'   => __('Add widgets here to appear in your footer.', 'coffeeshop'),
+            'name'          => esc_html__('Shop Sidebar', 'coffeeshop'),
+            'id'            => 'shop-sidebar',
+            'description'   => esc_html__('Add widgets here to appear in WooCommerce pages.', 'coffeeshop'),
             'before_widget' => '<section id="%1$s" class="widget %2$s">',
             'after_widget'  => '</section>',
-            'before_title'  => '<h2 class="widget-title">',
-            'after_title'   => '</h2>',
+            'before_title'  => '<h3 class="widget-title">',
+            'after_title'   => '</h3>',
         ));
     }
 }
 add_action('widgets_init', 'coffeeshop_widgets_init');
 
 /**
- * Enqueue scripts and styles
- */
-function coffeeshop_scripts() {
-    // Enqueue Google Fonts
-    wp_enqueue_style('coffeeshop-fonts', 'https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap', array(), null);
-    
-    // Enqueue main stylesheet
-    wp_enqueue_style('coffeeshop-style', get_stylesheet_uri(), array(), COFFEESHOP_VERSION);
-    
-    // Enqueue Elementor compatibility styles
-    wp_enqueue_style('coffeeshop-elementor', get_template_directory_uri() . '/css/elementor.css', array('coffeeshop-style'), COFFEESHOP_VERSION);
-    
-    // Enqueue theme scripts
-    wp_enqueue_script('coffeeshop-main', get_template_directory_uri() . '/js/main.js', array('jquery'), COFFEESHOP_VERSION, true);
-    
-    // Enqueue comment reply script
-    if (is_singular() && comments_open() && get_option('thread_comments')) {
-        wp_enqueue_script('comment-reply');
-    }
-    
-    // Localize script for AJAX
-    wp_localize_script('coffeeshop-main', 'coffeeshop_ajax', array(
-        'ajaxurl' => admin_url('admin-ajax.php'),
-        'nonce'   => wp_create_nonce('coffeeshop_nonce'),
-    ));
-}
-add_action('wp_enqueue_scripts', 'coffeeshop_scripts');
-
-/**
- * Enqueue Elementor compatibility
- */
-function coffeeshop_elementor_scripts() {
-    if (did_action('elementor/loaded')) {
-        wp_enqueue_script('coffeeshop-elementor', get_template_directory_uri() . '/js/elementor.js', array('jquery', 'elementor-frontend'), COFFEESHOP_VERSION, true);
-    }
-}
-add_action('wp_enqueue_scripts', 'coffeeshop_elementor_scripts');
-
-/**
- * Include required files
- */
-require get_template_directory() . '/inc/template-tags.php';
-require get_template_directory() . '/inc/template-functions.php';
-require get_template_directory() . '/inc/customizer.php';
-require get_template_directory() . '/inc/elementor-compatibility.php';
-require get_template_directory() . '/inc/custom-post-types.php';
-require get_template_directory() . '/inc/admin.php';
-
-// WooCommerce compatibility
-if (class_exists('WooCommerce')) {
-    require get_template_directory() . '/inc/woocommerce.php';
-}
-
-// Elementor compatibility
-if (did_action('elementor/loaded')) {
-    require get_template_directory() . '/inc/elementor-widgets.php';
-}
-
-/**
- * Custom CSS output
+ * Custom CSS Output
+ * Required for ThemeForest customization
  */
 function coffeeshop_custom_css() {
-    $primary_color = get_theme_mod('coffeeshop_primary_color', '#6F4E37');
+    $primary_color = get_theme_mod('coffeeshop_primary_color', '#8B4513');
     $secondary_color = get_theme_mod('coffeeshop_secondary_color', '#FFFFFF');
-    $accent_color = get_theme_mod('coffeeshop_accent_color', '#8B4513');
+    $accent_color = get_theme_mod('coffeeshop_accent_color', '#D2691E');
     
     $custom_css = "
     :root {
@@ -204,61 +257,87 @@ function coffeeshop_custom_css() {
     }
     ";
     
+    // Additional customizer CSS
+    $hero_bg = get_theme_mod('coffeeshop_hero_bg_image');
+    if ($hero_bg) {
+        $custom_css .= "
+        .hero-section {
+            background-image: linear-gradient(rgba(139, 69, 19, 0.7), rgba(139, 69, 19, 0.7)), url('{$hero_bg}');
+        }
+        ";
+    }
+    
     wp_add_inline_style('coffeeshop-style', $custom_css);
 }
 add_action('wp_enqueue_scripts', 'coffeeshop_custom_css');
 
 /**
- * Theme activation - Create required pages
+ * Include Required Files
+ */
+require get_template_directory() . '/inc/customizer.php';
+require get_template_directory() . '/inc/template-tags.php';
+require get_template_directory() . '/inc/template-functions.php';
+
+// WooCommerce integration
+if (class_exists('WooCommerce')) {
+    require get_template_directory() . '/inc/woocommerce.php';
+}
+
+// Elementor integration
+if (defined('ELEMENTOR_VERSION')) {
+    require get_template_directory() . '/inc/elementor.php';
+}
+
+// Admin functions
+if (is_admin()) {
+    require get_template_directory() . '/inc/admin.php';
+}
+
+/**
+ * Theme Activation
+ * Required by ThemeForest
  */
 function coffeeshop_activation() {
     // Set default customizer values
-    set_theme_mod('coffeeshop_primary_color', '#6F4E37');
-    set_theme_mod('coffeeshop_secondary_color', '#FFFFFF');
-    set_theme_mod('coffeeshop_accent_color', '#8B4513');
+    $defaults = array(
+        'coffeeshop_primary_color' => '#8B4513',
+        'coffeeshop_secondary_color' => '#FFFFFF',
+        'coffeeshop_accent_color' => '#D2691E',
+        'coffeeshop_logo_width' => 200,
+        'coffeeshop_enable_breadcrumbs' => true,
+        'coffeeshop_enable_scroll_top' => true,
+    );
     
-    // Create required pages
+    foreach ($defaults as $setting => $value) {
+        if (!get_theme_mod($setting)) {
+            set_theme_mod($setting, $value);
+        }
+    }
+    
+    // Create sample pages
     $pages = array(
         'home' => array(
             'title' => 'Home',
             'template' => 'page-home.php'
         ),
-        'about' => array(
-            'title' => 'About Us',
-            'template' => 'page-about.php'
-        ),
-        'barista' => array(
-            'title' => 'Our Baristas',
-            'template' => 'page-barista.php'
-        ),
-        'book' => array(
-            'title' => 'Book a Table',
-            'template' => 'page-book.php'
-        ),
         'menu' => array(
             'title' => 'Menu',
             'template' => 'page-menu.php'
         ),
-        'gallery' => array(
-            'title' => 'Gallery',
-            'template' => 'page-gallery.php'
-        ),
-        'faq' => array(
-            'title' => 'FAQ',
-            'template' => 'page-faq.php'
+        'about' => array(
+            'title' => 'About Us',
+            'template' => 'page-about.php'
         ),
         'contact' => array(
-            'title' => 'Contact Us',
+            'title' => 'Contact',
             'template' => 'page-contact.php'
-        )
+        ),
     );
     
     foreach ($pages as $slug => $page_data) {
-        $existing_page = get_page_by_path($slug);
-        if (!$existing_page) {
+        if (!get_page_by_path($slug)) {
             $page_id = wp_insert_post(array(
                 'post_title'     => $page_data['title'],
-                'post_name'      => $slug,
                 'post_content'   => '',
                 'post_status'    => 'publish',
                 'post_type'      => 'page',
@@ -283,7 +362,8 @@ function coffeeshop_activation() {
 add_action('after_switch_theme', 'coffeeshop_activation');
 
 /**
- * Required plugins notice
+ * Required Plugins Notice
+ * ThemeForest requirement
  */
 function coffeeshop_required_plugins_notice() {
     if (!get_transient('coffeeshop_activation_notice')) {
@@ -291,15 +371,14 @@ function coffeeshop_required_plugins_notice() {
     }
     
     $required_plugins = array(
-        'elementor' => 'Elementor',
-        'elementskit-lite' => 'ElementsKit Lite',
-        'header-footer-elementor' => 'Elementor Header & Footer Builder',
-        'metform' => 'MetForm'
+        'woocommerce/woocommerce.php' => 'WooCommerce',
+        'elementor/elementor.php' => 'Elementor',
+        'contact-form-7/wp-contact-form-7.php' => 'Contact Form 7',
     );
     
     $missing_plugins = array();
-    foreach ($required_plugins as $plugin_slug => $plugin_name) {
-        if (!is_plugin_active($plugin_slug . '/' . $plugin_slug . '.php')) {
+    foreach ($required_plugins as $plugin_path => $plugin_name) {
+        if (!is_plugin_active($plugin_path)) {
             $missing_plugins[] = $plugin_name;
         }
     }
@@ -307,16 +386,16 @@ function coffeeshop_required_plugins_notice() {
     if (!empty($missing_plugins)) {
         ?>
         <div class="notice notice-warning is-dismissible">
-            <p><strong><?php _e('CoffeeShop Pro Theme', 'coffeeshop'); ?></strong></p>
-            <p><?php _e('To get the full functionality of this theme, please install the following plugins:', 'coffeeshop'); ?></p>
-            <ul>
+            <p><strong><?php echo esc_html(COFFEESHOP_THEME_NAME); ?></strong></p>
+            <p><?php esc_html_e('To get the full functionality of this theme, please install the following recommended plugins:', 'coffeeshop'); ?></p>
+            <ul style="list-style: disc; margin-left: 20px;">
                 <?php foreach ($missing_plugins as $plugin) : ?>
-                    <li>• <?php echo esc_html($plugin); ?></li>
+                    <li><?php echo esc_html($plugin); ?></li>
                 <?php endforeach; ?>
             </ul>
             <p>
-                <a href="<?php echo admin_url('themes.php?page=coffeeshop-plugins'); ?>" class="button button-primary">
-                    <?php _e('Install Plugins', 'coffeeshop'); ?>
+                <a href="<?php echo esc_url(admin_url('themes.php?page=tgmpa-install-plugins')); ?>" class="button button-primary">
+                    <?php esc_html_e('Install Plugins', 'coffeeshop'); ?>
                 </a>
             </p>
         </div>
@@ -328,49 +407,181 @@ function coffeeshop_required_plugins_notice() {
 add_action('admin_notices', 'coffeeshop_required_plugins_notice');
 
 /**
- * Create database tables on theme activation
+ * Security Enhancements
+ * ThemeForest requirement
  */
-function coffeeshop_create_tables() {
-    global $wpdb;
-    
-    $charset_collate = $wpdb->get_charset_collate();
-    
-    // Bookings table
-    $bookings_table = $wpdb->prefix . 'coffeeshop_bookings';
-    
-    $bookings_sql = "CREATE TABLE $bookings_table (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        first_name tinytext NOT NULL,
-        last_name tinytext NOT NULL,
-        email varchar(100) NOT NULL,
-        phone varchar(20) NOT NULL,
-        date date NOT NULL,
-        time time NOT NULL,
-        guests int(2) NOT NULL,
-        occasion varchar(50),
-        special_requests text,
-        status varchar(20) DEFAULT 'pending',
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id)
-    ) $charset_collate;";
-    
-    // Contacts table
-    $contacts_table = $wpdb->prefix . 'coffeeshop_contacts';
-    
-    $contacts_sql = "CREATE TABLE $contacts_table (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        name tinytext NOT NULL,
-        email varchar(100) NOT NULL,
-        phone varchar(20),
-        subject varchar(200) NOT NULL,
-        message text NOT NULL,
-        status varchar(20) DEFAULT 'new',
-        created_at datetime DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (id)
-    ) $charset_collate;";
-    
-    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($bookings_sql);
-    dbDelta($contacts_sql);
+function coffeeshop_security_headers() {
+    if (!is_admin()) {
+        header('X-Content-Type-Options: nosniff');
+        header('X-Frame-Options: SAMEORIGIN');
+        header('X-XSS-Protection: 1; mode=block');
+        header('Referrer-Policy: strict-origin-when-cross-origin');
+    }
 }
-add_action('after_switch_theme', 'coffeeshop_create_tables');
+add_action('send_headers', 'coffeeshop_security_headers');
+
+// Remove WordPress version
+remove_action('wp_head', 'wp_generator');
+add_filter('the_generator', '__return_empty_string');
+
+// Disable XML-RPC
+add_filter('xmlrpc_enabled', '__return_false');
+
+/**
+ * Performance Optimizations
+ * ThemeForest best practices
+ */
+function coffeeshop_performance_optimizations() {
+    // Remove emoji scripts
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    
+    // Remove unnecessary head links
+    remove_action('wp_head', 'rsd_link');
+    remove_action('wp_head', 'wlwmanifest_link');
+    remove_action('wp_head', 'wp_shortlink_wp_head');
+}
+add_action('init', 'coffeeshop_performance_optimizations');
+
+/**
+ * Defer JavaScript Loading
+ */
+function coffeeshop_defer_parsing_js($tag, $handle, $src) {
+    if (is_admin()) return $tag;
+    
+    $defer_scripts = array('coffeeshop-custom', 'coffeeshop-navigation');
+    
+    if (in_array($handle, $defer_scripts)) {
+        return str_replace(' src', ' defer src', $tag);
+    }
+    
+    return $tag;
+}
+add_filter('script_loader_tag', 'coffeeshop_defer_parsing_js', 10, 3);
+
+/**
+ * Excerpt Length
+ */
+function coffeeshop_excerpt_length($length) {
+    return get_theme_mod('coffeeshop_excerpt_length', 25);
+}
+add_filter('excerpt_length', 'coffeeshop_excerpt_length', 999);
+
+/**
+ * Excerpt More
+ */
+function coffeeshop_excerpt_more($more) {
+    return '...';
+}
+add_filter('excerpt_more', 'coffeeshop_excerpt_more');
+
+/**
+ * Theme Support for Editor Styles
+ */
+add_theme_support('editor-styles');
+add_editor_style('assets/css/editor-style.css');
+
+/**
+ * Add Block Editor Support
+ */
+function coffeeshop_block_editor_assets() {
+    wp_enqueue_script(
+        'coffeeshop-block-editor',
+        get_template_directory_uri() . '/assets/js/block-editor.js',
+        array('wp-blocks', 'wp-dom-ready', 'wp-edit-post'),
+        COFFEESHOP_VERSION
+    );
+}
+add_action('enqueue_block_editor_assets', 'coffeeshop_block_editor_assets');
+
+/**
+ * Theme Documentation Link
+ * ThemeForest requirement
+ */
+function coffeeshop_admin_menu() {
+    add_theme_page(
+        esc_html__('Theme Documentation', 'coffeeshop'),
+        esc_html__('Theme Help', 'coffeeshop'),
+        'manage_options',
+        'coffeeshop-help',
+        'coffeeshop_help_page'
+    );
+}
+add_action('admin_menu', 'coffeeshop_admin_menu');
+
+function coffeeshop_help_page() {
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(COFFEESHOP_THEME_NAME); ?> - <?php esc_html_e('Documentation', 'coffeeshop'); ?></h1>
+        <div class="card">
+            <h2><?php esc_html_e('Getting Started', 'coffeeshop'); ?></h2>
+            <p><?php esc_html_e('Thank you for choosing our theme! For detailed documentation, please visit:', 'coffeeshop'); ?></p>
+            <p><a href="https://docs.yourwebsite.com/coffeeshop-pro" target="_blank" class="button button-primary"><?php esc_html_e('View Documentation', 'coffeeshop'); ?></a></p>
+        </div>
+        <div class="card">
+            <h2><?php esc_html_e('Support', 'coffeeshop'); ?></h2>
+            <p><?php esc_html_e('Need help? Contact our support team:', 'coffeeshop'); ?></p>
+            <p><a href="https://support.yourwebsite.com" target="_blank" class="button"><?php esc_html_e('Get Support', 'coffeeshop'); ?></a></p>
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * One Click Demo Import Support
+ * Popular ThemeForest feature
+ */
+function coffeeshop_import_files() {
+    return array(
+        array(
+            'import_file_name'           => 'Demo Import',
+            'categories'                 => array('Main Demo'),
+            'import_file_url'            => get_template_directory_uri() . '/demo-data/content.xml',
+            'import_widget_file_url'     => get_template_directory_uri() . '/demo-data/widgets.wie',
+            'import_customizer_file_url' => get_template_directory_uri() . '/demo-data/customizer.dat',
+            'import_preview_image_url'   => get_template_directory_uri() . '/screenshot.png',
+            'preview_url'                => 'https://demo.yourwebsite.com/coffeeshop-pro',
+        ),
+    );
+}
+add_filter('pt-ocdi/import_files', 'coffeeshop_import_files');
+
+/**
+ * TGMPA Plugin Activation
+ * ThemeForest requirement for bundled plugins
+ */
+require_once get_template_directory() . '/inc/class-tgm-plugin-activation.php';
+
+function coffeeshop_register_required_plugins() {
+    $plugins = array(
+        array(
+            'name'      => 'WooCommerce',
+            'slug'      => 'woocommerce',
+            'required'  => false,
+        ),
+        array(
+            'name'      => 'Elementor',
+            'slug'      => 'elementor',
+            'required'  => false,
+        ),
+        array(
+            'name'      => 'Contact Form 7',
+            'slug'      => 'contact-form-7',
+            'required'  => false,
+        ),
+    );
+
+    $config = array(
+        'id'           => 'coffeeshop',
+        'default_path' => '',
+        'menu'         => 'tgmpa-install-plugins',
+        'has_notices'  => true,
+        'dismissable'  => true,
+        'dismiss_msg'  => '',
+        'is_automatic' => false,
+        'message'      => '',
+    );
+
+    tgmpa($plugins, $config);
+}
+add_action('tgmpa_register', 'coffeeshop_register_required_plugins');
