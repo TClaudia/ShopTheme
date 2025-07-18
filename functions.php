@@ -74,9 +74,6 @@ function coffeeshop_setup() {
         'random-default'         => false,
         'header-text'            => true,
         'default-text-color'     => '000',
-        'wp-head-callback'       => '',
-        'admin-head-callback'    => '',
-        'admin-preview-callback' => '',
     ));
 
     // WooCommerce support
@@ -97,6 +94,13 @@ function coffeeshop_setup() {
     add_theme_support('wc-product-gallery-lightbox');
     add_theme_support('wc-product-gallery-slider');
 
+    // Gutenberg support
+    add_theme_support('wp-block-styles');
+    add_theme_support('align-wide');
+    add_theme_support('editor-styles');
+    add_editor_style('assets/css/editor-style.css');
+    add_theme_support('responsive-embeds');
+
     // Elementor support
     add_theme_support('elementor');
 
@@ -112,6 +116,7 @@ function coffeeshop_setup() {
     add_image_size('coffeeshop-gallery', 400, 400, true);
     add_image_size('coffeeshop-product', 300, 300, true);
     add_image_size('coffeeshop-blog-thumb', 300, 200, true);
+    add_image_size('coffeeshop-hero', 1920, 1080, true);
 }
 add_action('after_setup_theme', 'coffeeshop_setup');
 
@@ -270,28 +275,6 @@ function coffeeshop_custom_css() {
     wp_add_inline_style('coffeeshop-style', $custom_css);
 }
 add_action('wp_enqueue_scripts', 'coffeeshop_custom_css');
-
-/**
- * Include Required Files
- */
-require get_template_directory() . '/inc/customizer.php';
-require get_template_directory() . '/inc/template-tags.php';
-require get_template_directory() . '/inc/template-functions.php';
-
-// WooCommerce integration
-if (class_exists('WooCommerce')) {
-    require get_template_directory() . '/inc/woocommerce.php';
-}
-
-// Elementor integration
-if (defined('ELEMENTOR_VERSION')) {
-    require get_template_directory() . '/inc/elementor.php';
-}
-
-// Admin functions
-if (is_admin()) {
-    require get_template_directory() . '/inc/admin.php';
-}
 
 /**
  * Theme Activation
@@ -460,22 +443,6 @@ function coffeeshop_defer_parsing_js($tag, $handle, $src) {
 add_filter('script_loader_tag', 'coffeeshop_defer_parsing_js', 10, 3);
 
 /**
- * Excerpt Length
- */
-function coffeeshop_excerpt_length($length) {
-    return get_theme_mod('coffeeshop_excerpt_length', 25);
-}
-add_filter('excerpt_length', 'coffeeshop_excerpt_length', 999);
-
-/**
- * Excerpt More
- */
-function coffeeshop_excerpt_more($more) {
-    return '...';
-}
-add_filter('excerpt_more', 'coffeeshop_excerpt_more');
-
-/**
  * Theme Support for Editor Styles
  */
 add_theme_support('editor-styles');
@@ -528,23 +495,27 @@ function coffeeshop_help_page() {
 }
 
 /**
- * One Click Demo Import Support
- * Popular ThemeForest feature
+ * Include Required Files
+ * IMPORTANT: Include these AFTER all functions are declared
  */
-function coffeeshop_import_files() {
-    return array(
-        array(
-            'import_file_name'           => 'Demo Import',
-            'categories'                 => array('Main Demo'),
-            'import_file_url'            => get_template_directory_uri() . '/demo-data/content.xml',
-            'import_widget_file_url'     => get_template_directory_uri() . '/demo-data/widgets.wie',
-            'import_customizer_file_url' => get_template_directory_uri() . '/demo-data/customizer.dat',
-            'import_preview_image_url'   => get_template_directory_uri() . '/screenshot.png',
-            'preview_url'                => 'https://demo.yourwebsite.com/coffeeshop-pro',
-        ),
-    );
+require get_template_directory() . '/inc/template-functions.php';
+require get_template_directory() . '/inc/template-tags.php';
+require get_template_directory() . '/inc/customizer.php';
+
+// WooCommerce integration
+if (class_exists('WooCommerce')) {
+    require get_template_directory() . '/inc/woocommerce.php';
 }
-add_filter('pt-ocdi/import_files', 'coffeeshop_import_files');
+
+// Elementor integration
+if (defined('ELEMENTOR_VERSION')) {
+    require get_template_directory() . '/inc/elementor.php';
+}
+
+// Admin functions
+if (is_admin()) {
+    require get_template_directory() . '/inc/admin.php';
+}
 
 /**
  * TGMPA Plugin Activation

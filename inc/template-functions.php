@@ -3,10 +3,19 @@
  * Functions which enhance the theme by hooking into WordPress
  *
  * @package CoffeeShop
+ * @since 1.0.0
  */
+
+// Prevent direct access
+if (!defined('ABSPATH')) {
+    exit('Direct access forbidden.');
+}
 
 /**
  * Adds custom classes to the array of body classes.
+ *
+ * @param array $classes Classes for the body element.
+ * @return array
  */
 function coffeeshop_body_classes($classes) {
     // Adds a class of hfeed to non-singular pages.
@@ -41,6 +50,23 @@ function coffeeshop_body_classes($classes) {
         $classes[] = sanitize_html_class($template_class);
     }
 
+    // Add custom classes based on page type
+    if (is_home()) {
+        $classes[] = 'blog-home';
+    }
+    
+    if (is_front_page()) {
+        $classes[] = 'front-page';
+    }
+    
+    if (is_search()) {
+        $classes[] = 'search-results';
+    }
+    
+    if (is_404()) {
+        $classes[] = 'error-404';
+    }
+
     return $classes;
 }
 add_filter('body_class', 'coffeeshop_body_classes');
@@ -57,6 +83,10 @@ add_action('wp_head', 'coffeeshop_pingback_header');
 
 /**
  * Add preconnect for Google Fonts.
+ *
+ * @param array  $urls           URLs to print for resource hints.
+ * @param string $relation_type  The relation type the URLs are printed.
+ * @return array $urls           URLs to print for resource hints.
  */
 function coffeeshop_resource_hints($urls, $relation_type) {
     if (wp_style_is('coffeeshop-fonts', 'queue') && 'preconnect' === $relation_type) {
@@ -71,14 +101,22 @@ add_filter('wp_resource_hints', 'coffeeshop_resource_hints', 10, 2);
 
 /**
  * Custom excerpt length
+ *
+ * @param int $length Excerpt length.
+ * @return int
  */
 function coffeeshop_excerpt_length($length) {
     if (is_admin()) {
         return $length;
     }
     
+    // Different excerpt lengths for different contexts
     if (is_home() || is_category() || is_tag()) {
-        return 25;
+        return get_theme_mod('coffeeshop_excerpt_length', 25);
+    }
+    
+    if (is_search()) {
+        return 15;
     }
     
     return 20;
@@ -87,14 +125,24 @@ add_filter('excerpt_length', 'coffeeshop_excerpt_length');
 
 /**
  * Custom excerpt more
+ *
+ * @param string $more Excerpt more string.
+ * @return string
  */
 function coffeeshop_excerpt_more($more) {
+    if (is_admin()) {
+        return $more;
+    }
+    
     return '...';
 }
 add_filter('excerpt_more', 'coffeeshop_excerpt_more');
 
 /**
  * Add custom image sizes to media library
+ *
+ * @param array $sizes Existing image sizes.
+ * @return array
  */
 function coffeeshop_custom_image_sizes($sizes) {
     return array_merge($sizes, array(
@@ -102,538 +150,79 @@ function coffeeshop_custom_image_sizes($sizes) {
         'coffeeshop-featured' => __('Featured Image', 'coffeeshop'),
         'coffeeshop-thumb' => __('Thumbnail', 'coffeeshop'),
         'coffeeshop-gallery' => __('Gallery Image', 'coffeeshop'),
-        'coffeeshop-barista' => __('Barista Photo', 'coffeeshop'),
+        'coffeeshop-product' => __('Product Image', 'coffeeshop'),
+        'coffeeshop-blog-thumb' => __('Blog Thumbnail', 'coffeeshop'),
     ));
 }
 add_filter('image_size_names_choose', 'coffeeshop_custom_image_sizes');
 
 /**
- * Filter products AJAX handler
+ * Modify the comments link text
+ *
+ * @param string $comments_link Comments link HTML.
+ * @return string
  */
-function coffeeshop_filter_products() {
-    check_ajax_referer('coffeeshop_nonce', 'nonce');
+function coffeeshop_comments_link($comments_link) {
+    $comments_link = str_replace('Leave a comment', __('Leave a Comment', 'coffeeshop'), $comments_link);
+    $comments_link = str_replace('1 Comment', __('1 Comment', 'coffeeshop'), $comments_link);
+    $comments_link = str_replace(' Comments', __(' Comments', 'coffeeshop'), $comments_link);
     
-    $categories = isset($_POST['categories']) ? $_POST['categories'] : array();
-    $min_price = isset($_POST['min_price']) ? intval($_POST['min_price']) : 0;
-    $max_price = isset($_POST['max_price']) ? intval($_POST['max_price']) : 999999;
-    $sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : 'date';
-    
-    $args = array(
-        'post_type' => 'product',
-        'posts_per_page' => 12,
-        'meta_query' => array(
-            array(
-                'key' => '_price',
-                'value' => array($min_price, $max_price),
-                'compare' => 'BETWEEN',
-                'type' => 'NUMERIC'
-            )
-        )
-    );
-    
-    if (!empty($categories)) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'product_cat',
-                'field' => 'term_id',
-                'terms' => $categories,
-            )
-        );
-    }
-    
-    // Sort options
-    switch ($sort_by) {
-        case 'price_low':
-            $args['orderby'] = 'meta_value_num';
-            $args['meta_key'] = '_price';
-            $args['order'] = 'ASC';
-            break;
-        case 'price_high':
-            $args['orderby'] = 'meta_value_num';
-            $args['meta_key'] = '_price';
-            $args['order'] = 'DESC';
-            break;
-        case 'popularity':
-            $args['meta_key'] = 'total_sales';
-            $args['orderby'] = 'meta_value_num';
-            $args['order'] = 'DESC';
-            break;
-        default:
-            $args['orderby'] = 'date';
-            $args['order'] = 'DESC';
-    }
-    
-    $products = new WP_Query($args);
-    
-    if ($products->have_posts()) {
-        while ($products->have_posts()) {
-            $products->the_post();
-            wc_get_template_part('content', 'product');
-        }
-    } else {
-        echo '<p>' . __('No products found.', 'coffeeshop') . '</p>';
-    }
-    
-    wp_reset_postdata();
-    wp_die();
+    return $comments_link;
 }
-add_action('wp_ajax_filter_products', 'coffeeshop_filter_products');
-add_action('wp_ajax_nopriv_filter_products', 'coffeeshop_filter_products');
+add_filter('comments_popup_link_attributes', 'coffeeshop_comments_link');
 
 /**
- * Newsletter signup AJAX handler
+ * Filter the "read more" excerpt string link to the post.
+ *
+ * @param string $more_link_element Read more link element.
+ * @param string $more_link_text    Read more text.
+ * @return string
  */
-function coffeeshop_newsletter_signup() {
-    check_ajax_referer('coffeeshop_nonce', 'nonce');
-    
-    $email = sanitize_email($_POST['email']);
-    
-    if (!is_email($email)) {
-        wp_send_json_error(array('message' => __('Please enter a valid email address.', 'coffeeshop')));
-    }
-    
-    // Here you would typically integrate with your newsletter service
-    // For this example, we'll just save to database
-    $subscribers = get_option('coffeeshop_newsletter_subscribers', array());
-    
-    if (in_array($email, $subscribers)) {
-        wp_send_json_error(array('message' => __('You are already subscribed.', 'coffeeshop')));
-    }
-    
-    $subscribers[] = $email;
-    update_option('coffeeshop_newsletter_subscribers', $subscribers);
-    
-    wp_send_json_success(array('message' => __('Thank you for subscribing!', 'coffeeshop')));
+function coffeeshop_read_more_link($more_link_element, $more_link_text) {
+    $more_link_element = str_replace($more_link_text, __('Continue Reading', 'coffeeshop'), $more_link_element);
+    return $more_link_element;
 }
-add_action('wp_ajax_newsletter_signup', 'coffeeshop_newsletter_signup');
-add_action('wp_ajax_nopriv_newsletter_signup', 'coffeeshop_newsletter_signup');
+add_filter('the_content_more_link', 'coffeeshop_read_more_link', 10, 2);
 
 /**
- * Handle booking form submission
+ * Add reading time estimation
+ *
+ * @param string $content Post content.
+ * @return string
  */
-function coffeeshop_process_booking() {
-    check_ajax_referer('coffeeshop_nonce', 'nonce');
-    
-    parse_str($_POST['form_data'], $form_data);
-    
-    // Validate required fields
-    $required_fields = ['first_name', 'last_name', 'email', 'phone', 'date', 'time', 'guests'];
-    foreach ($required_fields as $field) {
-        if (empty($form_data[$field])) {
-            wp_send_json_error(array('message' => sprintf(__('Please fill in the %s field.', 'coffeeshop'), str_replace('_', ' ', $field))));
-        }
-    }
-    
-    // Validate email
-    if (!is_email($form_data['email'])) {
-        wp_send_json_error(array('message' => __('Please enter a valid email address.', 'coffeeshop')));
-    }
-    
-    // Validate date (must be in the future)
-    if (strtotime($form_data['date']) < strtotime('today')) {
-        wp_send_json_error(array('message' => __('Please select a future date.', 'coffeeshop')));
-    }
-    
-    // Save booking to database
-    $booking_data = array(
-        'first_name' => sanitize_text_field($form_data['first_name']),
-        'last_name' => sanitize_text_field($form_data['last_name']),
-        'email' => sanitize_email($form_data['email']),
-        'phone' => sanitize_text_field($form_data['phone']),
-        'date' => sanitize_text_field($form_data['date']),
-        'time' => sanitize_text_field($form_data['time']),
-        'guests' => intval($form_data['guests']),
-        'occasion' => sanitize_text_field($form_data['occasion']),
-        'special_requests' => sanitize_textarea_field($form_data['special_requests']),
-        'status' => 'pending',
-        'created_at' => current_time('mysql')
-    );
-    
-    // Save to database
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'coffeeshop_bookings';
-    
-    $result = $wpdb->insert(
-        $table_name,
-        $booking_data,
-        array('%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s')
-    );
-    
-    if ($result === false) {
-        wp_send_json_error(array('message' => __('Failed to save booking. Please try again.', 'coffeeshop')));
-    }
-    
-    // Send confirmation email to customer
-    $customer_subject = __('Booking Confirmation - CoffeeShop', 'coffeeshop');
-    $customer_message = sprintf(
-        __("Dear %s,\n\nThank you for your booking!\n\nBooking Details:\nDate: %s\nTime: %s\nGuests: %d\nOccasion: %s\n\nWe look forward to serving you!\n\nBest regards,\nCoffeeShop Team", 'coffeeshop'),
-        $booking_data['first_name'] . ' ' . $booking_data['last_name'],
-        date('F j, Y', strtotime($booking_data['date'])),
-        date('g:i A', strtotime($booking_data['time'])),
-        $booking_data['guests'],
-        $booking_data['occasion'] ? $booking_data['occasion'] : __('Not specified', 'coffeeshop')
-    );
-    
-    wp_mail($booking_data['email'], $customer_subject, $customer_message);
-    
-    // Send notification email to admin
-    $admin_email = get_option('admin_email');
-    $admin_subject = __('New Booking Received - CoffeeShop', 'coffeeshop');
-    $admin_message = sprintf(
-        __("A new booking has been received:\n\nCustomer: %s %s\nEmail: %s\nPhone: %s\nDate: %s\nTime: %s\nGuests: %d\nOccasion: %s\nSpecial Requests: %s\n\nPlease review and confirm the booking.", 'coffeeshop'),
-        $booking_data['first_name'],
-        $booking_data['last_name'],
-        $booking_data['email'],
-        $booking_data['phone'],
-        date('F j, Y', strtotime($booking_data['date'])),
-        date('g:i A', strtotime($booking_data['time'])),
-        $booking_data['guests'],
-        $booking_data['occasion'] ? $booking_data['occasion'] : __('Not specified', 'coffeeshop'),
-        $booking_data['special_requests'] ? $booking_data['special_requests'] : __('None', 'coffeeshop')
-    );
-    
-    wp_mail($admin_email, $admin_subject, $admin_message);
-    
-    wp_send_json_success(array('message' => __('Your booking has been submitted successfully! We will contact you shortly to confirm.', 'coffeeshop')));
-}
-add_action('wp_ajax_process_booking', 'coffeeshop_process_booking');
-add_action('wp_ajax_nopriv_process_booking', 'coffeeshop_process_booking');
-
-/**
- * Handle contact form submission
- */
-function coffeeshop_process_contact() {
-    check_ajax_referer('coffeeshop_nonce', 'nonce');
-    
-    $name = sanitize_text_field($_POST['name']);
-    $email = sanitize_email($_POST['email']);
-    $phone = sanitize_text_field($_POST['phone']);
-    $subject = sanitize_text_field($_POST['subject']);
-    $message = sanitize_textarea_field($_POST['message']);
-    
-    // Validate required fields
-    if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        wp_send_json_error(array('message' => __('Please fill in all required fields.', 'coffeeshop')));
-    }
-    
-    // Validate email
-    if (!is_email($email)) {
-        wp_send_json_error(array('message' => __('Please enter a valid email address.', 'coffeeshop')));
-    }
-    
-    // Save to database
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'coffeeshop_contacts';
-    
-    $contact_data = array(
-        'name' => $name,
-        'email' => $email,
-        'phone' => $phone,
-        'subject' => $subject,
-        'message' => $message,
-        'status' => 'new',
-        'created_at' => current_time('mysql')
-    );
-    
-    $result = $wpdb->insert(
-        $table_name,
-        $contact_data,
-        array('%s', '%s', '%s', '%s', '%s', '%s', '%s')
-    );
-    
-    if ($result === false) {
-        wp_send_json_error(array('message' => __('Failed to send message. Please try again.', 'coffeeshop')));
-    }
-    
-    // Send email to admin
-    $admin_email = get_option('admin_email');
-    $email_subject = __('New Contact Form Submission - CoffeeShop', 'coffeeshop');
-    $email_message = sprintf(
-        __("A new contact form submission has been received:\n\nName: %s\nEmail: %s\nPhone: %s\nSubject: %s\n\nMessage:\n%s", 'coffeeshop'),
-        $name,
-        $email,
-        $phone,
-        $subject,
-        $message
-    );
-    
-    $headers = array('Reply-To: ' . $name . ' <' . $email . '>');
-    wp_mail($admin_email, $email_subject, $email_message, $headers);
-    
-    // Send confirmation email to sender
-    $confirmation_subject = __('Thank you for contacting us - CoffeeShop', 'coffeeshop');
-    $confirmation_message = sprintf(
-        __("Dear %s,\n\nThank you for contacting us. We have received your message and will get back to you as soon as possible.\n\nYour message:\nSubject: %s\nMessage: %s\n\nBest regards,\nCoffeeShop Team", 'coffeeshop'),
-        $name,
-        $subject,
-        $message
-    );
-    
-    wp_mail($email, $confirmation_subject, $confirmation_message);
-    
-    wp_send_json_success(array('message' => __('Thank you for your message! We will get back to you soon.', 'coffeeshop')));
-}
-add_action('wp_ajax_process_contact', 'coffeeshop_process_contact');
-add_action('wp_ajax_nopriv_process_contact', 'coffeeshop_process_contact');
-
-/**
- * Get opening hours for today
- */
-function coffeeshop_get_opening_hours($day = null) {
-    if ($day === null) {
-        $day = strtolower(date('l'));
-    }
-    
-    $hours = array(
-        'monday' => array('open' => '07:00', 'close' => '20:00'),
-        'tuesday' => array('open' => '07:00', 'close' => '20:00'),
-        'wednesday' => array('open' => '07:00', 'close' => '20:00'),
-        'thursday' => array('open' => '07:00', 'close' => '20:00'),
-        'friday' => array('open' => '07:00', 'close' => '21:00'),
-        'saturday' => array('open' => '08:00', 'close' => '21:00'),
-        'sunday' => array('open' => '08:00', 'close' => '19:00'),
-    );
-    
-    // Allow customization via theme options
-    $custom_hours = get_theme_mod('coffeeshop_opening_hours', $hours);
-    
-    return isset($custom_hours[$day]) ? $custom_hours[$day] : $hours[$day];
-}
-
-/**
- * Check if shop is currently open
- */
-function coffeeshop_is_open($day = null, $time = null) {
-    if ($day === null) {
-        $day = strtolower(date('l'));
-    }
-    
-    if ($time === null) {
-        $time = date('H:i');
-    }
-    
-    $hours = coffeeshop_get_opening_hours($day);
-    
-    if (!$hours || empty($hours['open']) || empty($hours['close'])) {
-        return false;
-    }
-    
-    $current_time = strtotime($time);
-    $open_time = strtotime($hours['open']);
-    $close_time = strtotime($hours['close']);
-    
-    return ($current_time >= $open_time && $current_time <= $close_time);
-}
-
-/**
- * Add schema markup for business
- */
-function coffeeshop_add_schema_markup() {
-    if (!is_front_page()) {
-        return;
-    }
-    
-    $business_info = array(
-        '@context' => 'https://schema.org',
-        '@type' => 'CoffeeShop',
-        'name' => get_bloginfo('name'),
-        'description' => get_bloginfo('description'),
-        'url' => home_url(),
-        'telephone' => get_theme_mod('coffeeshop_phone', ''),
-        'email' => get_theme_mod('coffeeshop_email', ''),
-        'address' => array(
-            '@type' => 'PostalAddress',
-            'streetAddress' => get_theme_mod('coffeeshop_address', ''),
-        ),
-        'openingHours' => array(),
-        'priceRange' => '$',
-        'servesCuisine' => 'Coffee',
-        'acceptsReservations' => true,
-    );
-    
-    // Add opening hours
-    $days = array('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
-    foreach ($days as $day) {
-        $hours = coffeeshop_get_opening_hours($day);
-        if ($hours && !empty($hours['open']) && !empty($hours['close'])) {
-            $business_info['openingHours'][] = ucfirst(substr($day, 0, 2)) . ' ' . $hours['open'] . '-' . $hours['close'];
-        }
-    }
-    
-    echo '<script type="application/ld+json">' . json_encode($business_info) . '</script>';
-}
-add_action('wp_head', 'coffeeshop_add_schema_markup');
-
-/**
- * Custom comment callback
- */
-function coffeeshop_comment_callback($comment, $args, $depth) {
-    $GLOBALS['comment'] = $comment;
-    
-    switch ($comment->comment_type) {
-        case 'pingback':
-        case 'trackback':
-            ?>
-            <li class="pingback">
-                <p><?php _e('Pingback:', 'coffeeshop'); ?> <?php comment_author_link(); ?> <?php edit_comment_link(__('Edit', 'coffeeshop'), '<span class="edit-link">', '</span>'); ?></p>
-            </li>
-            <?php
-            break;
-        default:
-            ?>
-            <li <?php comment_class(); ?> id="comment-<?php comment_ID(); ?>">
-                <article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
-                    <footer class="comment-meta">
-                        <div class="comment-author vcard">
-                            <?php if (0 != $args['avatar_size']) echo get_avatar($comment, $args['avatar_size']); ?>
-                            <?php printf(__('%s <span class="says">says:</span>', 'coffeeshop'), sprintf('<cite class="fn">%s</cite>', get_comment_author_link())); ?>
-                        </div>
-
-                        <div class="comment-metadata">
-                            <a href="<?php echo esc_url(get_comment_link($comment->comment_ID)); ?>">
-                                <time datetime="<?php comment_time('c'); ?>">
-                                    <?php printf(_x('%1$s at %2$s', '1: date, 2: time', 'coffeeshop'), get_comment_date(), get_comment_time()); ?>
-                                </time>
-                            </a>
-                            <?php edit_comment_link(__('Edit', 'coffeeshop'), '<span class="edit-link">', '</span>'); ?>
-                        </div>
-
-                        <?php if ($comment->comment_approved == '0') : ?>
-                            <p class="comment-awaiting-moderation"><?php _e('Your comment is awaiting moderation.', 'coffeeshop'); ?></p>
-                        <?php endif; ?>
-                    </footer>
-
-                    <div class="comment-content">
-                        <?php comment_text(); ?>
-                    </div>
-
-                    <?php
-                    comment_reply_link(array_merge($args, array(
-                        'add_below' => 'div-comment',
-                        'depth' => $depth,
-                        'max_depth' => $args['max_depth'],
-                        'before' => '<div class="reply">',
-                        'after' => '</div>',
-                    )));
-                    ?>
-                </article>
-            </li>
-            <?php
-            break;
-    }
-}
-
-/**
- * Add custom fields to user profile
- */
-function coffeeshop_add_user_fields($user) {
-    ?>
-    <h3><?php _e('Coffee Preferences', 'coffeeshop'); ?></h3>
-    <table class="form-table">
-        <tr>
-            <th><label for="favorite_coffee"><?php _e('Favorite Coffee', 'coffeeshop'); ?></label></th>
-            <td>
-                <input type="text" name="favorite_coffee" id="favorite_coffee" value="<?php echo esc_attr(get_user_meta($user->ID, 'favorite_coffee', true)); ?>" class="regular-text" />
-                <br /><span class="description"><?php _e('What is your favorite type of coffee?', 'coffeeshop'); ?></span>
-            </td>
-        </tr>
-        <tr>
-            <th><label for="coffee_strength"><?php _e('Preferred Strength', 'coffeeshop'); ?></label></th>
-            <td>
-                <select name="coffee_strength" id="coffee_strength">
-                    <option value=""><?php _e('Select...', 'coffeeshop'); ?></option>
-                    <option value="mild" <?php selected(get_user_meta($user->ID, 'coffee_strength', true), 'mild'); ?>><?php _e('Mild', 'coffeeshop'); ?></option>
-                    <option value="medium" <?php selected(get_user_meta($user->ID, 'coffee_strength', true), 'medium'); ?>><?php _e('Medium', 'coffeeshop'); ?></option>
-                    <option value="strong" <?php selected(get_user_meta($user->ID, 'coffee_strength', true), 'strong'); ?>><?php _e('Strong', 'coffeeshop'); ?></option>
-                </select>
-            </td>
-        </tr>
-    </table>
-    <?php
-}
-add_action('show_user_profile', 'coffeeshop_add_user_fields');
-add_action('edit_user_profile', 'coffeeshop_add_user_fields');
-
-/**
- * Save custom user fields
- */
-function coffeeshop_save_user_fields($user_id) {
-    if (!current_user_can('edit_user', $user_id)) {
-        return false;
-    }
-    
-    if (isset($_POST['favorite_coffee'])) {
-        update_user_meta($user_id, 'favorite_coffee', sanitize_text_field($_POST['favorite_coffee']));
-    }
-    
-    if (isset($_POST['coffee_strength'])) {
-        update_user_meta($user_id, 'coffee_strength', sanitize_text_field($_POST['coffee_strength']));
-    }
-}
-add_action('personal_options_update', 'coffeeshop_save_user_fields');
-add_action('edit_user_profile_update', 'coffeeshop_save_user_fields');
-
-/**
- * Add coffee shop info to REST API
- */
-function coffeeshop_add_rest_fields() {
-    register_rest_field('post', 'reading_time', array(
-        'get_callback' => 'coffeeshop_get_reading_time',
-        'schema' => array(
-            'description' => __('Estimated reading time in minutes', 'coffeeshop'),
-            'type' => 'integer',
-        ),
-    ));
-}
-add_action('rest_api_init', 'coffeeshop_add_rest_fields');
-
-/**
- * Calculate reading time for posts
- */
-function coffeeshop_get_reading_time($post) {
-    $content = get_post_field('post_content', $post['id']);
+function coffeeshop_reading_time($content) {
     $word_count = str_word_count(strip_tags($content));
-    $reading_time = ceil($word_count / 200); // Average reading speed is 200 words per minute
+    $reading_time = ceil($word_count / 200); // Average reading speed
     
-    return max(1, $reading_time); // Minimum 1 minute
-}
-
-/**
- * Add reading time to posts
- */
-function coffeeshop_add_reading_time() {
-    if (is_single() && get_post_type() === 'post') {
-        $reading_time = coffeeshop_get_reading_time(array('id' => get_the_ID()));
-        echo '<span class="reading-time"><i class="fas fa-clock"></i> ' . sprintf(_n('%d minute read', '%d minutes read', $reading_time, 'coffeeshop'), $reading_time) . '</span>';
+    if ($reading_time == 1) {
+        $timer = __('1 minute read', 'coffeeshop');
+    } else {
+        $timer = sprintf(__('%d minutes read', 'coffeeshop'), $reading_time);
     }
+    
+    return '<span class="reading-time"><i class="fas fa-clock" aria-hidden="true"></i> ' . $timer . '</span>';
 }
 
 /**
- * Security enhancements
+ * Get reading time for current post
+ *
+ * @return string
  */
-function coffeeshop_security_headers() {
-    if (!is_admin()) {
-        header('X-Content-Type-Options: nosniff');
-        header('X-Frame-Options: SAMEORIGIN');
-        header('X-XSS-Protection: 1; mode=block');
-        header('Referrer-Policy: strict-origin-when-cross-origin');
+function coffeeshop_get_reading_time() {
+    global $post;
+    
+    if (!$post) {
+        return '';
     }
+    
+    return coffeeshop_reading_time($post->post_content);
 }
-add_action('send_headers', 'coffeeshop_security_headers');
 
 /**
- * Remove WordPress version from head and feeds
- */
-remove_action('wp_head', 'wp_generator');
-add_filter('the_generator', '__return_empty_string');
-
-/**
- * Disable XML-RPC
- */
-add_filter('xmlrpc_enabled', '__return_false');
-
-/**
- * Remove WordPress version from scripts and styles
+ * Security enhancements - Remove version from scripts and styles
+ *
+ * @param string $src Script/style source URL.
+ * @return string
  */
 function coffeeshop_remove_version_scripts_styles($src) {
     if (strpos($src, 'ver=')) {
@@ -645,41 +234,367 @@ add_filter('style_loader_src', 'coffeeshop_remove_version_scripts_styles', 9999)
 add_filter('script_loader_src', 'coffeeshop_remove_version_scripts_styles', 9999);
 
 /**
- * Performance optimizations
+ * Custom search form modifications
+ *
+ * @param string $form Search form HTML.
+ * @return string
  */
-function coffeeshop_performance_optimizations() {
-    // Remove emoji scripts
-    remove_action('wp_head', 'print_emoji_detection_script', 7);
-    remove_action('wp_print_styles', 'print_emoji_styles');
-    remove_action('admin_print_scripts', 'print_emoji_detection_script');
-    remove_action('admin_print_styles', 'print_emoji_styles');
-    remove_filter('the_content_feed', 'wp_staticize_emoji');
-    remove_filter('comment_text_rss', 'wp_staticize_emoji');
-    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+function coffeeshop_search_form($form) {
+    $form = '<form role="search" method="get" class="search-form" action="' . esc_url(home_url('/')) . '">
+        <label>
+            <span class="screen-reader-text">' . _x('Search for:', 'label', 'coffeeshop') . '</span>
+            <input type="search" class="search-field" placeholder="' . esc_attr_x('Search...', 'placeholder', 'coffeeshop') . '" value="' . get_search_query() . '" name="s" />
+        </label>
+        <button type="submit" class="search-submit">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <span class="screen-reader-text">' . _x('Search', 'submit button', 'coffeeshop') . '</span>
+        </button>
+    </form>';
     
-    // Remove unnecessary head links
-    remove_action('wp_head', 'rsd_link');
-    remove_action('wp_head', 'wlwmanifest_link');
-    remove_action('wp_head', 'wp_shortlink_wp_head');
-    
-    // Remove feed links if not needed
-    if (!get_theme_mod('coffeeshop_enable_feeds', true)) {
-        remove_action('wp_head', 'feed_links', 2);
-        remove_action('wp_head', 'feed_links_extra', 3);
-    }
+    return $form;
 }
-add_action('init', 'coffeeshop_performance_optimizations');
+add_filter('get_search_form', 'coffeeshop_search_form');
 
 /**
- * Defer parsing of JavaScript
+ * Modify tag cloud widget
+ *
+ * @param array $args Tag cloud arguments.
+ * @return array
  */
-function coffeeshop_defer_parsing_js($url) {
-    if (is_admin()) return $url;
-    if (FALSE === strpos($url, '.js')) return $url;
-    if (strpos($url, 'jquery.js')) return $url;
-    return str_replace(' src', ' defer src', $url);
+function coffeeshop_widget_tag_cloud_args($args) {
+    $args['number'] = 20;
+    $args['largest'] = 1.2;
+    $args['smallest'] = 0.9;
+    $args['unit'] = 'em';
+    
+    return $args;
 }
-if (get_theme_mod('coffeeshop_defer_js', false)) {
-    add_filter('script_loader_tag', 'coffeeshop_defer_parsing_js', 10, 2);
-}       
+add_filter('widget_tag_cloud_args', 'coffeeshop_widget_tag_cloud_args');
 
+/**
+ * Add meta viewport for better mobile experience
+ */
+function coffeeshop_mobile_viewport() {
+    echo '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">';
+}
+add_action('wp_head', 'coffeeshop_mobile_viewport', 1);
+
+/**
+ * Add theme color for mobile browsers
+ */
+function coffeeshop_theme_color() {
+    $primary_color = get_theme_mod('coffeeshop_primary_color', '#8B4513');
+    echo '<meta name="theme-color" content="' . esc_attr($primary_color) . '">';
+    echo '<meta name="msapplication-TileColor" content="' . esc_attr($primary_color) . '">';
+}
+add_action('wp_head', 'coffeeshop_theme_color');
+
+/**
+ * Customize login page
+ */
+function coffeeshop_login_logo() {
+    $custom_logo_id = get_theme_mod('custom_logo');
+    $logo_url = wp_get_attachment_image_url($custom_logo_id, 'full');
+    
+    if ($logo_url) {
+        ?>
+        <style type="text/css">
+            #login h1 a, .login h1 a {
+                background-image: url('<?php echo esc_url($logo_url); ?>');
+                height: 80px;
+                width: 320px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                padding-bottom: 30px;
+            }
+        </style>
+        <?php
+    }
+}
+add_action('login_enqueue_scripts', 'coffeeshop_login_logo');
+
+/**
+ * Change login logo URL
+ *
+ * @return string
+ */
+function coffeeshop_login_logo_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'coffeeshop_login_logo_url');
+
+/**
+ * Change login logo title
+ *
+ * @return string
+ */
+function coffeeshop_login_logo_url_title() {
+    return get_bloginfo('name');
+}
+add_filter('login_headertext', 'coffeeshop_login_logo_url_title');
+
+/**
+ * Filter products AJAX handler
+ */
+function coffeeshop_filter_products() {
+    check_ajax_referer('coffeeshop_nonce', 'nonce');
+    
+    $categories = isset($_POST['categories']) ? array_map('sanitize_text_field', $_POST['categories']) : array();
+    $min_price = isset($_POST['min_price']) ? intval($_POST['min_price']) : 0;
+    $max_price = isset($_POST['max_price']) ? intval($_POST['max_price']) : 999999;
+    $sort_by = isset($_POST['sort_by']) ? sanitize_text_field($_POST['sort_by']) : 'date';
+    
+    $args = array(
+        'post_type' => 'product',
+        'post_status' => 'publish',
+        'posts_per_page' => 12,
+        'meta_query' => array(
+            array(
+                'key' => '_price',
+                'value' => array($min_price, $max_price),
+                'type' => 'NUMERIC',
+                'compare' => 'BETWEEN',
+            ),
+        ),
+    );
+    
+    if (!empty($categories)) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $categories,
+            ),
+        );
+    }
+    
+    switch ($sort_by) {
+        case 'price_low':
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = '_price';
+            $args['order'] = 'ASC';
+            break;
+        case 'price_high':
+            $args['orderby'] = 'meta_value_num';
+            $args['meta_key'] = '_price';
+            $args['order'] = 'DESC';
+            break;
+        case 'name':
+            $args['orderby'] = 'title';
+            $args['order'] = 'ASC';
+            break;
+        default:
+            $args['orderby'] = 'date';
+            $args['order'] = 'DESC';
+    }
+    
+    $query = new WP_Query($args);
+    
+    ob_start();
+    
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            wc_get_template_part('content', 'product');
+        }
+    } else {
+        echo '<p class="no-products-found">' . esc_html__('No products found matching your criteria.', 'coffeeshop') . '</p>';
+    }
+    
+    wp_reset_postdata();
+    
+    $output = ob_get_clean();
+    
+    wp_send_json_success($output);
+}
+add_action('wp_ajax_filter_products', 'coffeeshop_filter_products');
+add_action('wp_ajax_nopriv_filter_products', 'coffeeshop_filter_products');
+
+/**
+ * Load more posts AJAX handler
+ */
+function coffeeshop_load_more_posts() {
+    check_ajax_referer('coffeeshop_nonce', 'nonce');
+    
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 6;
+    
+    $args = array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => $posts_per_page,
+        'paged' => $page,
+    );
+    
+    $query = new WP_Query($args);
+    
+    ob_start();
+    
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            get_template_part('template-parts/content', 'blog');
+        }
+    }
+    
+    wp_reset_postdata();
+    
+    $output = ob_get_clean();
+    
+    wp_send_json_success(array(
+        'html' => $output,
+        'has_more' => $page < $query->max_num_pages,
+    ));
+}
+add_action('wp_ajax_load_more_posts', 'coffeeshop_load_more_posts');
+add_action('wp_ajax_nopriv_load_more_posts', 'coffeeshop_load_more_posts');
+
+/**
+ * Add schema markup for organization
+ */
+function coffeeshop_schema_markup() {
+    if (!is_front_page()) {
+        return;
+    }
+    
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'CafeOrCoffeeShop',
+        'name' => get_bloginfo('name'),
+        'description' => get_bloginfo('description'),
+        'url' => home_url(),
+        'telephone' => get_theme_mod('coffeeshop_phone', ''),
+        'address' => array(
+            '@type' => 'PostalAddress',
+            'streetAddress' => get_theme_mod('coffeeshop_address', ''),
+            'addressLocality' => get_theme_mod('coffeeshop_city', ''),
+            'postalCode' => get_theme_mod('coffeeshop_zip', ''),
+            'addressCountry' => get_theme_mod('coffeeshop_country', ''),
+        ),
+        'openingHours' => get_theme_mod('coffeeshop_hours', 'Mo-Su 08:00-20:00'),
+        'priceRange' => get_theme_mod('coffeeshop_price_range', '$'),
+    );
+    
+    $logo_id = get_theme_mod('custom_logo');
+    if ($logo_id) {
+        $logo_url = wp_get_attachment_image_url($logo_id, 'full');
+        $schema['logo'] = $logo_url;
+        $schema['image'] = $logo_url;
+    }
+    
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+}
+add_action('wp_head', 'coffeeshop_schema_markup');
+
+/**
+ * Add Open Graph meta tags
+ */
+function coffeeshop_open_graph() {
+    if (is_single() || is_page()) {
+        global $post;
+        
+        echo '<meta property="og:title" content="' . esc_attr(get_the_title()) . '">' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr(wp_strip_all_tags(get_the_excerpt())) . '">' . "\n";
+        echo '<meta property="og:type" content="article">' . "\n";
+        echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '">' . "\n";
+        echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
+        
+        if (has_post_thumbnail()) {
+            $thumbnail_id = get_post_thumbnail_id();
+            $thumbnail_url = wp_get_attachment_image_url($thumbnail_id, 'large');
+            echo '<meta property="og:image" content="' . esc_url($thumbnail_url) . '">' . "\n";
+        }
+    } elseif (is_home() || is_front_page()) {
+        echo '<meta property="og:title" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr(get_bloginfo('description')) . '">' . "\n";
+        echo '<meta property="og:type" content="website">' . "\n";
+        echo '<meta property="og:url" content="' . esc_url(home_url()) . '">' . "\n";
+        echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
+        
+        $logo_id = get_theme_mod('custom_logo');
+        if ($logo_id) {
+            $logo_url = wp_get_attachment_image_url($logo_id, 'large');
+            echo '<meta property="og:image" content="' . esc_url($logo_url) . '">' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'coffeeshop_open_graph');
+
+/**
+ * Add Twitter Card meta tags
+ */
+function coffeeshop_twitter_card() {
+    echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    
+    if (is_single() || is_page()) {
+        echo '<meta name="twitter:title" content="' . esc_attr(get_the_title()) . '">' . "\n";
+        echo '<meta name="twitter:description" content="' . esc_attr(wp_strip_all_tags(get_the_excerpt())) . '">' . "\n";
+        
+        if (has_post_thumbnail()) {
+            $thumbnail_id = get_post_thumbnail_id();
+            $thumbnail_url = wp_get_attachment_image_url($thumbnail_id, 'large');
+            echo '<meta name="twitter:image" content="' . esc_url($thumbnail_url) . '">' . "\n";
+        }
+    } elseif (is_home() || is_front_page()) {
+        echo '<meta name="twitter:title" content="' . esc_attr(get_bloginfo('name')) . '">' . "\n";
+        echo '<meta name="twitter:description" content="' . esc_attr(get_bloginfo('description')) . '">' . "\n";
+        
+        $logo_id = get_theme_mod('custom_logo');
+        if ($logo_id) {
+            $logo_url = wp_get_attachment_image_url($logo_id, 'large');
+            echo '<meta name="twitter:image" content="' . esc_url($logo_url) . '">' . "\n";
+        }
+    }
+    
+    $twitter_handle = get_theme_mod('coffeeshop_twitter_handle');
+    if ($twitter_handle) {
+        echo '<meta name="twitter:site" content="@' . esc_attr($twitter_handle) . '">' . "\n";
+        echo '<meta name="twitter:creator" content="@' . esc_attr($twitter_handle) . '">' . "\n";
+    }
+}
+add_action('wp_head', 'coffeeshop_twitter_card');
+
+/**
+ * Customize comment form fields
+ *
+ * @param array $fields Comment form fields.
+ * @return array
+ */
+function coffeeshop_comment_form_fields($fields) {
+    $commenter = wp_get_current_commenter();
+    $req = get_option('require_name_email');
+    $aria_req = ($req ? ' aria-required="true"' : '');
+    $html_req = ($req ? ' required="required"' : '');
+    
+    $fields['author'] = '<div class="form-group"><label for="author">' . __('Name', 'coffeeshop') . ($req ? ' <span class="required">*</span>' : '') . '</label> ' .
+                       '<input id="author" name="author" type="text" value="' . esc_attr($commenter['comment_author']) . '" class="form-control"' . $aria_req . $html_req . ' /></div>';
+                       
+    $fields['email'] = '<div class="form-group"><label for="email">' . __('Email', 'coffeeshop') . ($req ? ' <span class="required">*</span>' : '') . '</label> ' .
+                      '<input id="email" name="email" type="email" value="' . esc_attr($commenter['comment_author_email']) . '" class="form-control"' . $aria_req . $html_req . ' /></div>';
+                      
+    $fields['url'] = '<div class="form-group"><label for="url">' . __('Website', 'coffeeshop') . '</label> ' .
+                    '<input id="url" name="url" type="url" value="' . esc_attr($commenter['comment_author_url']) . '" class="form-control" /></div>';
+    
+    return $fields;
+}
+add_filter('comment_form_default_fields', 'coffeeshop_comment_form_fields');
+
+/**
+ * Modify comment form
+ *
+ * @param array $args Comment form arguments.
+ * @return array
+ */
+function coffeeshop_comment_form($args) {
+    $args['comment_field'] = '<div class="form-group"><label for="comment">' . _x('Comment', 'noun', 'coffeeshop') . ' <span class="required">*</span></label> <textarea id="comment" name="comment" class="form-control" rows="6" aria-required="true" required="required"></textarea></div>';
+    
+    $args['class_submit'] = 'btn btn-primary';
+    $args['submit_button'] = '<button name="%1$s" type="submit" id="%2$s" class="%3$s" value="%4$s">%4$s</button>';
+    $args['title_reply'] = __('Leave a Comment', 'coffeeshop');
+    $args['title_reply_to'] = __('Leave a Reply to %s', 'coffeeshop');
+    $args['cancel_reply_link'] = __('Cancel Reply', 'coffeeshop');
+    $args['label_submit'] = __('Post Comment', 'coffeeshop');
+    
+    return $args;
+}
+add_filter('comment_form_defaults', 'coffeeshop_comment_form');

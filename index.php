@@ -142,20 +142,27 @@ get_header();
                     </div>
                     
                     <?php
-                    $testimonials = get_theme_mod('coffeeshop_testimonials', array(
-                        array(
-                            'name' => __('Sarah Johnson', 'coffeeshop'),
-                            'position' => __('Coffee Enthusiast', 'coffeeshop'),
-                            'content' => __('The best coffee shop in town! Their Ethiopian blend is absolutely amazing. The atmosphere is perfect for working or relaxing.', 'coffeeshop'),
-                            'rating' => 5
-                        ),
-                        array(
-                            'name' => __('Emma Davis', 'coffeeshop'),
-                            'position' => __('Designer', 'coffeeshop'),
-                            'content' => __('Love the cozy environment and friendly staff. Their latte art is Instagram-worthy and tastes even better!', 'coffeeshop'),
-                            'rating' => 5
-                        )
-                    ));
+                  // Găsește această secțiune și corectează:
+$testimonials = get_theme_mod('coffeeshop_testimonials', array(
+    array(
+        'name' => __('Sarah Johnson', 'coffeeshop'),        // ✅ CORECT
+        'position' => __('Coffee Enthusiast', 'coffeeshop'), // ✅ CORECT
+        'content' => __('The best coffee shop in town!...', 'coffeeshop'),
+        'rating' => 5
+    ),
+    array(
+        'name' => __('Mike Chen', 'coffeeshop'),           // 🔧 CORECTEAZĂ AICI
+        'position' => __('Local Business Owner', 'coffeeshop'), // 🔧 ȘI AICI
+        'content' => __('I start every morning here...', 'coffeeshop'),
+        'rating' => 5
+    ),
+    array(
+        'name' => __('Emma Davis', 'coffeeshop'),          // ✅ VERIFICĂ ȘI AICI
+        'position' => __('Designer', 'coffeeshop'),        // ✅ ȘI AICI
+        'content' => __('Love the cozy environment...', 'coffeeshop'),
+        'rating' => 5
+    )
+));
                     
                     if (!empty($testimonials)) : ?>
                         <div class="grid grid-3">

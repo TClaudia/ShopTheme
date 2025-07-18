@@ -84,7 +84,6 @@
                             'container'      => false,
                             'depth'          => 3,
                             'fallback_cb'    => 'coffeeshop_fallback_menu',
-                            'walker'         => new CoffeeShop_Walker_Nav_Menu(),
                         )
                     );
                     ?>
